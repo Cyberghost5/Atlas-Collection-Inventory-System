@@ -28,7 +28,7 @@ database/*.db
 
 # Temporary & Scratch Development Scripts
 /scratch/
-/public/command.php
+# /public/command.php
 .agents/
 .gemini/
 
