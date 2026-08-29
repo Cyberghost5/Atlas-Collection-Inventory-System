@@ -1,27 +1,69 @@
-*.log
-.DS_Store
+# Environment & Secrets
 .env
 .env.backup
 .env.production
-.phpactor.json
-.phpunit.result.cache
-/.codex
-/.cursor/
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
+.env.local
+.env.staging
+/storage/*.key
 /auth.json
+
+# Dependencies & Package Managers
+/vendor
 /node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Build & Compiled Assets
 /public/build
-/public/fonts-manifest.dev.json
 /public/hot
 /public/storage
-/storage/*.key
+/public/fonts-manifest.dev.json
+
+# Local Database Files
+database/database.sqlite
+database/*.sqlite
+database/*.sqlite-journal
+database/*.db
+
+# Temporary & Scratch Development Scripts
+/scratch/
+/public/command.php
+.agents/
+.gemini/
+
+# Public Uploaded Files (Retain directory structure with .gitignore)
+/public/uploads/products/*
+!/public/uploads/products/.gitignore
+/public/uploads/payment_proofs/*
+!/public/uploads/payment_proofs/.gitignore
+
+# Storage Logs & Framework Caches
+*.log
+/storage/logs/*.log
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
 /storage/pail
-/vendor
+
+# IDE & Editor Files
+.idea
+.vscode
+.codex
+.cursor/
+.nova
+.zed
+.phpactor.json
 _ide_helper.php
 Homestead.json
 Homestead.yaml
+
+# Testing & Caches
+.phpunit.result.cache
+/.phpunit.cache
+
+# Operating System Files
+.DS_Store
 Thumbs.db
+ehthumbs.db
+Desktop.ini
