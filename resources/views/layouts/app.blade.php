@@ -493,14 +493,17 @@
 
             <!-- Alerts -->
             <div class="px-4 sm:px-6 pt-4">
-                @if(session('success'))
-                    <div class="p-4 mb-4 text-sm text-emerald-800 dark:text-emerald-300 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 flex items-center justify-between shadow-sm" role="alert">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <span class="font-medium">{{ session('success') }}</span>
+                @if(session('success') || request()->has('cache_cleared'))
+                    <div x-data="{ open: true }" x-show="open" class="p-4 mb-4 text-sm text-emerald-800 dark:text-emerald-300 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 flex items-center justify-between shadow-sm transition-all" role="alert">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-base flex-shrink-0">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                            <span class="font-bold text-xs sm:text-sm">
+                                {{ session('success') ?? 'System cache cleared successfully! (Application, View, Route, and Config caches flushed).' }}
+                            </span>
                         </div>
+                        <button @click="open = false" type="button" class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 text-lg font-black ml-4">&times;</button>
                     </div>
                 @endif
 

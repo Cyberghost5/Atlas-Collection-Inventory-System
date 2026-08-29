@@ -138,7 +138,7 @@
     <div class="bg-gradient-to-r from-amber-600 via-amber-700 to-amber-600 dark:from-amber-950 dark:via-slate-950 dark:to-amber-950 text-white dark:text-amber-200 py-2 px-4 text-center text-[11px] font-medium tracking-wide flex items-center justify-between border-b border-amber-500/20 shadow-sm">
         <div class="max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-2">
             <div class="flex items-center space-x-2 truncate">
-                <span><i class="fa-solid fa-location-dot text-amber-300 mr-1"></i> Wunti market, Bababa plaza, shop E7 Block E (Beside New Flyover), Bauchi, Nigeria</span>
+                <span><i class="fa-solid fa-location-dot text-amber-300 mr-1"></i> Wunti Market, Bababa Plaza, Block E, Shop E7 (Beside New Flyover), Bauchi, Nigeria</span>
                 <span class="hidden md:inline-block font-extrabold text-amber-200 dark:text-amber-400">| ...your style, our identity</span>
             </div>
             

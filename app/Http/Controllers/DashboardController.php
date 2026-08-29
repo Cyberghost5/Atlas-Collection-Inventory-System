@@ -158,7 +158,7 @@ class DashboardController extends Controller
         ));
     }
 
-    public function clearCache()
+    public function clearCache(Request $request)
     {
         try {
             \Illuminate\Support\Facades\Artisan::call('cache:clear');
@@ -166,7 +166,13 @@ class DashboardController extends Controller
             \Illuminate\Support\Facades\Artisan::call('route:clear');
             \Illuminate\Support\Facades\Artisan::call('config:clear');
 
-            return redirect()->back()->with('success', 'System cache cleared successfully! (Application, View, Route, and Config caches flushed).');
+            $previousUrl = url()->previous();
+            $redirectUrl = \Illuminate\Support\Str::contains($previousUrl, 'cache_cleared=1')
+                ? $previousUrl
+                : (\Illuminate\Support\Str::contains($previousUrl, '?') ? $previousUrl . '&cache_cleared=1' : $previousUrl . '?cache_cleared=1');
+
+            return redirect($redirectUrl)
+                ->with('success', 'System cache cleared successfully! (Application, View, Route, and Config caches flushed).');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to clear system cache: ' . $e->getMessage());
         }

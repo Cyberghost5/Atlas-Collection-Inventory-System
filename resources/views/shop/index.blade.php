@@ -126,7 +126,7 @@
                 ...your style, our identity
             </p>
             <p class="text-xs sm:text-sm text-slate-200 dark:text-slate-300 leading-relaxed pt-1">
-                Browse our real-time stock catalog. Located at <strong>Wunti Market, Bababa Plaza, Shop E7 Block E (Beside New Flyover), Bauchi</strong>. Select your item and click <strong>"WhatsApp Order"</strong> to send your pick directly to us!
+                Browse our real-time stock catalog. Located at <strong>Wunti Market, Bababa Plaza, Block E, Shop E7 (Beside New Flyover), Bauchi</strong>. Select your item and click <strong>"WhatsApp Order"</strong> to send your pick directly to us!
             </p>
         </div>
         <div class="relative z-10 flex-shrink-0">

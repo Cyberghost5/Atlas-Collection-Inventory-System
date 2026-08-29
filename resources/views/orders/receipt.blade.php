@@ -102,7 +102,7 @@
                 <img src="{{ asset('logo.png') }}" alt="Atlas Collection" class="h-12 w-auto mx-auto object-contain mb-2">
                 <h1 class="text-base font-black font-display tracking-wider text-slate-900 uppercase">ATLAS COLLECTION</h1>
                 <p class="text-[10px] text-slate-600 leading-tight">
-                    Wunti Market, Bababa Plaza, Shop E7 Block E (Beside New Flyover), Bauchi, Nigeria
+                    Wunti Market, Bababa Plaza, Block E, Shop E7 (Beside New Flyover), Bauchi, Nigeria
                 </p>
                 <p class="text-[10px] font-bold text-slate-800"><i class="fa-solid fa-phone text-slate-500 mr-1"></i> 0810 399 6947 • 08103996947</p>
             </div>

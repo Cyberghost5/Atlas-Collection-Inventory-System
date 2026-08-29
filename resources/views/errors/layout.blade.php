@@ -89,7 +89,7 @@
     <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 text-xs text-slate-500 dark:text-slate-400 transition-colors">
         <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
             <p class="font-semibold">
-                <i class="fa-solid fa-location-dot text-amber-500 mr-1"></i> Wunti market, Bababa plaza, shop E7 Block E (Beside New Flyover), Bauchi, Nigeria
+                <i class="fa-solid fa-location-dot text-amber-500 mr-1"></i> Wunti Market, Bababa Plaza, Block E, Shop E7 (Beside New Flyover), Bauchi, Nigeria
             </p>
             <p>
                 <i class="fa-brands fa-whatsapp text-emerald-500 mr-1"></i> Phone / WhatsApp: <a href="https://wa.me/2348103996947" target="_blank" class="text-amber-600 dark:text-amber-400 font-bold hover:underline">0810 399 6947</a> | Email: <a href="mailto:atlascollection6@gmail.com" class="hover:underline">atlascollection6@gmail.com</a>

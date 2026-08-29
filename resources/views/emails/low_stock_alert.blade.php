@@ -75,7 +75,7 @@
         </div>
 
         <div class="footer">
-            Wunti market, Bababa plaza, shop E7 Block E (Beside New Flyover), Bauchi, Nigeria<br>
+            Wunti Market, Bababa Plaza, Block E, Shop E7 (Beside New Flyover), Bauchi, Nigeria<br>
             Phone: 0810 399 6947 | Email: atlascollection6@gmail.com
         </div>
     </div>
