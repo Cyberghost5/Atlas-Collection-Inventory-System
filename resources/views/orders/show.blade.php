@@ -59,17 +59,17 @@
             <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
                 <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
                     <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                        Purchased Items ({{ $order->items->count() }})
+                        Purchased Items ({{ optional($order->orderItems)->count() ?? 0 }})
                     </h3>
                     <span class="text-xs font-mono font-bold text-amber-600 dark:text-amber-400">Total: ₦{{ number_format($order->total_amount, 2) }}</span>
                 </div>
 
                 <div class="divide-y divide-slate-100 dark:divide-slate-800">
-                    @foreach($order->items as $item)
+                    @forelse($order->orderItems ?? [] as $item)
                         <div class="p-5 flex items-center justify-between">
                             <div class="space-y-1">
                                 <h4 class="font-bold text-slate-900 dark:text-white text-sm">
-                                    {{ $item->product->name ?? $item->product_name }}
+                                    {{ $item->product->name ?? $item->product_name ?? 'Item' }}
                                 </h4>
                                 <div class="text-[11px] text-slate-400 font-mono space-x-2">
                                     <span>SKU: {{ $item->product->sku ?? 'N/A' }}</span>
@@ -85,7 +85,11 @@
                                 <span class="text-[11px] text-slate-400">₦{{ number_format($item->unit_price, 2) }} × {{ $item->quantity }}</span>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="p-5 text-center text-xs text-slate-500">
+                            No line items recorded for this order.
+                        </div>
+                    @endforelse
                 </div>
             </div>
 
