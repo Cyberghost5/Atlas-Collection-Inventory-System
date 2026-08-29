@@ -83,8 +83,8 @@
             <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
                 <span class="text-[10px] uppercase font-bold text-slate-500">Customer Contact</span>
                 <p class="font-bold text-slate-200">{{ $order->customer_name }}</p>
-                <p class="text-slate-400">📞 {{ $order->customer_phone }}</p>
-                <p class="text-slate-400">✉️ {{ $order->customer_email }}</p>
+                <p class="text-slate-400"><i class="fa-solid fa-phone text-slate-500 mr-1"></i> {{ $order->customer_phone }}</p>
+                <p class="text-slate-400"><i class="fa-solid fa-envelope text-slate-500 mr-1"></i> {{ $order->customer_email }}</p>
             </div>
 
             <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">

@@ -30,7 +30,7 @@
                     <select name="timeframe" 
                             onchange="this.form.submit()" 
                             class="py-2 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-amber-500 focus:bg-white dark:focus:bg-slate-900 transition-all cursor-pointer">
-                        <option value="all_time" {{ $timeframe === 'all_time' ? 'selected' : '' }}>📅 All Time</option>
+                        <option value="all_time" {{ $timeframe === 'all_time' ? 'selected' : '' }}>All Time</option>
                         <option value="today" {{ $timeframe === 'today' ? 'selected' : '' }}>Today</option>
                         <option value="yesterday" {{ $timeframe === 'yesterday' ? 'selected' : '' }}>Yesterday</option>
                         <option value="last_7_days" {{ $timeframe === 'last_7_days' ? 'selected' : '' }}>Last 7 Days</option>
@@ -298,7 +298,7 @@
                                 <a href="{{ route('orders.show', $ord->order_number) }}" class="font-mono font-bold text-indigo-600 dark:text-indigo-400 hover:underline block">
                                     #{{ $ord->order_number }}
                                 </a>
-                                <span class="text-[10px] text-slate-400 block">{{ $ord->customer_name }} • 📞 {{ $ord->customer_phone }}</span>
+                                <span class="text-[10px] text-slate-400 block">{{ $ord->customer_name }} • <i class="fa-solid fa-phone text-slate-400 mr-1"></i> {{ $ord->customer_phone }}</span>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase {{ $ord->status_badge }}">

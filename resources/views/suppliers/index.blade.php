@@ -78,8 +78,8 @@
                                 {{ $supplier->contact_person ?? '-' }}
                             </td>
                             <td class="px-4 py-3 text-slate-600 dark:text-slate-300">
-                                @if($supplier->phone) <div>📞 {{ $supplier->phone }}</div> @endif
-                                @if($supplier->email) <div class="text-[10px] text-slate-400">✉️ {{ $supplier->email }}</div> @endif
+                                @if($supplier->phone) <div><i class="fa-solid fa-phone text-slate-400 mr-1"></i> {{ $supplier->phone }}</div> @endif
+                                @if($supplier->email) <div class="text-[10px] text-slate-400"><i class="fa-solid fa-envelope text-slate-400 mr-1"></i> {{ $supplier->email }}</div> @endif
                             </td>
                             <td class="px-4 py-3 text-center">
                                 <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-400">

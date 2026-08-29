@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" 
       class="h-full" 
       x-data="{ 
+          mobileMenuOpen: false,
           theme: localStorage.getItem('theme') || 'light', 
           toggleTheme() { 
               this.theme = this.theme === 'dark' ? 'light' : 'dark'; 
@@ -91,6 +92,9 @@
     </script>
     @stack('schema')
 
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -134,7 +138,7 @@
     <div class="bg-gradient-to-r from-amber-600 via-amber-700 to-amber-600 dark:from-amber-950 dark:via-slate-950 dark:to-amber-950 text-white dark:text-amber-200 py-2 px-4 text-center text-[11px] font-medium tracking-wide flex items-center justify-between border-b border-amber-500/20 shadow-sm">
         <div class="max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-2">
             <div class="flex items-center space-x-2 truncate">
-                <span>📍 Wunti market, Bababa plaza, shop E7 Block E (Beside New Flyover), Bauchi, Nigeria</span>
+                <span><i class="fa-solid fa-location-dot text-amber-300 mr-1"></i> Wunti market, Bababa plaza, shop E7 Block E (Beside New Flyover), Bauchi, Nigeria</span>
                 <span class="hidden md:inline-block font-extrabold text-amber-200 dark:text-amber-400">| ...your style, our identity</span>
             </div>
             
@@ -189,13 +193,31 @@
                     </div>
                 </a>
 
-                <!-- Right Header Actions (Theme Toggle & Staff Dashboard link if logged in) -->
-                <div class="flex items-center space-x-3 sm:space-x-4">
+                <!-- Desktop Header Navigation Links -->
+                <div class="hidden md:flex items-center space-x-4">
                     
-                    <!-- Currency / Catalog Badge -->
-                    <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30">
+                    <!-- Currency Badge -->
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30">
                         (₦ NGN)
                     </span>
+
+                    <!-- Home Link -->
+                    <a href="{{ route('shop.index') }}" class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-amber-500 dark:hover:text-amber-400 transition-all space-x-1.5">
+                        <i class="fa-solid fa-house text-amber-500"></i>
+                        <span>Home</span>
+                    </a>
+
+                    <!-- Store Categories Link -->
+                    <a href="{{ route('shop.categories') }}" class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 transition-all space-x-1.5 shadow-sm">
+                        <i class="fa-solid fa-layer-group text-amber-500"></i>
+                        <span>Categories</span>
+                    </a>
+
+                    <!-- Track Orders Link -->
+                    <a href="{{ route('shop.my-orders') }}" class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-amber-500 dark:hover:text-amber-400 transition-all space-x-1.5">
+                        <i class="fa-solid fa-box-archive text-amber-500"></i>
+                        <span>My Orders</span>
+                    </a>
 
                     <!-- Light / Dark Mode Toggle Button -->
                     <button @click="toggleTheme()" 
@@ -207,7 +229,7 @@
                                 <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
                                 </svg>
-                                <span class="hidden md:inline">Light</span>
+                                <span>Light</span>
                             </span>
                         </template>
                         <template x-if="theme === 'light'">
@@ -215,12 +237,12 @@
                                 <svg class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
                                 </svg>
-                                <span class="hidden md:inline">Dark</span>
+                                <span>Dark</span>
                             </span>
                         </template>
                     </button>
 
-                    <!-- Staff/Admin Control Link (HIDDEN for public visitors; only displayed if user is logged in) -->
+                    <!-- Staff/Admin Control Link -->
                     @auth
                         <a href="{{ route('dashboard') }}" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-extrabold text-xs rounded-xl shadow-md transition-all">
                             Admin Dashboard &rarr;
@@ -235,7 +257,74 @@
 
                 </div>
 
+                <!-- Mobile Header Right Actions (Categories shortcut + Hamburger Menu Toggle) -->
+                <div class="flex md:hidden items-center space-x-2">
+                    <a href="{{ route('shop.categories') }}" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30 flex items-center space-x-1">
+                        <i class="fa-solid fa-layer-group text-amber-500"></i>
+                        <span>Categories</span>
+                    </a>
+
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" 
+                            type="button" 
+                            class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:bg-slate-200 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" style="display:none;"/>
+                        </svg>
+                    </button>
+                </div>
+
             </div>
+        </div>
+
+        <!-- Storefront Mobile Menu Drawer -->
+        <div x-show="mobileMenuOpen" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 -translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 -translate-y-4"
+             class="md:hidden bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 px-4 pt-3 pb-6 space-y-2 text-xs font-bold shadow-xl"
+             style="display: none;">
+            
+            <a href="{{ route('shop.index') }}" class="flex items-center space-x-2.5 px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">
+                <i class="fa-solid fa-house text-amber-500"></i>
+                <span>Home / Stock Catalog</span>
+            </a>
+
+            <a href="{{ route('shop.categories') }}" class="flex items-center space-x-2.5 px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">
+                <i class="fa-solid fa-layer-group text-amber-500"></i>
+                <span>Product Categories</span>
+            </a>
+
+            <a href="{{ route('shop.my-orders') }}" class="flex items-center space-x-2.5 px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">
+                <i class="fa-solid fa-box-archive text-amber-500"></i>
+                <span>Track My Orders</span>
+            </a>
+
+            <button @click="toggleTheme()" type="button" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-left">
+                <div class="flex items-center space-x-2.5">
+                    <i class="fa-solid fa-circle-half-stroke text-amber-500"></i>
+                    <span>Toggle Theme Mode</span>
+                </div>
+                <span class="text-[10px] uppercase font-black px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400" x-text="theme"></span>
+            </button>
+
+            @auth
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-800 space-y-2">
+                    <a href="{{ route('dashboard') }}" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black">
+                        <span>Admin Dashboard</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}" class="block">
+                        @csrf
+                        <button type="submit" class="w-full py-2.5 text-center text-rose-500 font-bold hover:underline">
+                            Logout of Account
+                        </button>
+                    </form>
+                </div>
+            @endauth
         </div>
     </header>
 
@@ -256,7 +345,7 @@
                     Nigeria's premier luxury streetwear collection. Preview available stock and place instant orders directly with us via WhatsApp.
                 </p>
                 <p class="text-[11px] text-amber-600 dark:text-amber-400 font-semibold leading-normal">
-                    📍 {{ config('services.store.location') }}
+                    <i class="fa-solid fa-location-dot text-amber-500 mr-1"></i> {{ config('services.store.location') }}
                 </p>
             </div>
 
@@ -293,13 +382,13 @@
             <!-- Direct Contact Info -->
             <div class="space-y-2">
                 <h4 class="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">Direct Contact & Sales</h4>
-                <p>💬 WhatsApp & Call: <a href="https://wa.me/{{ config('services.whatsapp.number') }}" target="_blank" class="text-amber-600 dark:text-amber-400 font-bold hover:underline">{{ config('services.store.phone') }}</a></p>
-                <p>✉️ Email: <a href="mailto:{{ config('services.store.email') }}" class="text-slate-800 dark:text-slate-200 font-medium hover:underline">{{ config('services.store.email') }}</a></p>
+                <p><i class="fa-brands fa-whatsapp text-emerald-500 mr-1"></i> WhatsApp & Call: <a href="https://wa.me/{{ config('services.whatsapp.number') }}" target="_blank" class="text-amber-600 dark:text-amber-400 font-bold hover:underline">{{ config('services.store.phone') }}</a></p>
+                <p><i class="fa-solid fa-envelope text-slate-400 mr-1"></i> Email: <a href="mailto:{{ config('services.store.email') }}" class="text-slate-800 dark:text-slate-200 font-medium hover:underline">{{ config('services.store.email') }}</a></p>
             </div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 text-center text-[11px] text-slate-500">
-            &copy; {{ date('Y') }} Atlas Collection Bauchi, Nigeria. Stock catalog preview. | Powered by <a href="https://harkone.com.ng" target="_blank" class="text-amber-600 dark:text-amber-400 font-bold hover:underline">Harkone Designs</a>
+            &copy; {{ date('Y') }} Atlas Collection Bauchi, Nigeria. | Powered by <a href="https://harkone.com.ng" target="_blank" class="text-amber-600 dark:text-amber-400 font-bold hover:underline">Harkone Designs</a>
         </div>
     </footer>
 

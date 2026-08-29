@@ -129,7 +129,7 @@
                             <label class="relative flex items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 cursor-pointer">
                                 <input type="radio" name="usage_type" value="retail" {{ old('usage_type', 'retail') === 'retail' ? 'checked' : '' }} class="text-amber-500 focus:ring-amber-500">
                                 <div class="ml-3">
-                                    <span class="block text-xs font-bold text-slate-900 dark:text-white">🛍️ Retail Stock</span>
+                                    <span class="block text-xs font-bold text-slate-900 dark:text-white"><i class="fa-solid fa-bag-shopping text-amber-500 mr-1"></i> Retail Stock</span>
                                     <span class="block text-[10px] text-slate-400">Standard sale items</span>
                                 </div>
                             </label>
@@ -137,7 +137,7 @@
                             <label class="relative flex items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 cursor-pointer">
                                 <input type="radio" name="usage_type" value="display_sample" {{ old('usage_type') === 'display_sample' ? 'checked' : '' }} class="text-amber-500 focus:ring-amber-500">
                                 <div class="ml-3">
-                                    <span class="block text-xs font-bold text-slate-900 dark:text-white">🧥 Display / Tester</span>
+                                    <span class="block text-xs font-bold text-slate-900 dark:text-white"><i class="fa-solid fa-shirt text-amber-500 mr-1"></i> Display / Tester</span>
                                     <span class="block text-[10px] text-slate-400">Showroom / Tester bottle</span>
                                 </div>
                             </label>
@@ -145,7 +145,7 @@
                             <label class="relative flex items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 cursor-pointer">
                                 <input type="radio" name="usage_type" value="both" {{ old('usage_type') === 'both' ? 'checked' : '' }} class="text-amber-500 focus:ring-amber-500">
                                 <div class="ml-3">
-                                    <span class="block text-xs font-bold text-slate-900 dark:text-white">🔄 Dual Usage</span>
+                                    <span class="block text-xs font-bold text-slate-900 dark:text-white"><i class="fa-solid fa-rotate text-amber-500 mr-1"></i> Dual Usage</span>
                                     <span class="block text-[10px] text-slate-400">Retail & Display</span>
                                 </div>
                             </label>

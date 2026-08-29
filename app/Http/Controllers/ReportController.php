@@ -140,10 +140,10 @@ class ReportController extends Controller
         $pmTable = [];
 
         $methodNames = [
-            'cash'          => '💵 Cash Payment',
-            'bank_transfer' => '💳 Bank Transfer',
-            'pos'           => '📱 POS / Card Machine',
-            'other'         => '🌐 Other Payment',
+            'cash'          => 'Cash Payment',
+            'bank_transfer' => 'Bank Transfer',
+            'pos'           => 'POS / Card Machine',
+            'other'         => 'Other Payment',
         ];
 
         foreach (['cash', 'bank_transfer', 'pos', 'other'] as $mKey) {

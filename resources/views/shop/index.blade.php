@@ -16,6 +16,12 @@
          sellerPhone: '{{ config('services.whatsapp.number') }}',
          copiedToast: false,
 
+         currentPage: {{ $products->currentPage() }},
+         hasMore: {{ $products->hasMorePages() ? 'true' : 'false' }},
+         loadingMore: false,
+         loadedCount: {{ $products->count() }},
+         totalCount: {{ $products->total() }},
+
          openQuickModal(product) {
              this.selectedProduct = product;
              this.modalQuantity = 1;
@@ -49,6 +55,44 @@
                  text += `\n*Location/Notes:* ${this.deliveryNote.trim()}`;
              }
              return `https://wa.me/${this.sellerPhone}?text=${encodeURIComponent(text)}`;
+         },
+
+         loadNextChunk() {
+             if (!this.hasMore || this.loadingMore) return;
+             this.loadingMore = true;
+
+             let url = new URL(window.location.href);
+             url.searchParams.set('page', this.currentPage + 1);
+
+             fetch(url.toString(), {
+                 headers: {
+                     'X-Requested-With': 'XMLHttpRequest',
+                     'Accept': 'application/json'
+                 }
+             })
+             .then(res => res.json())
+             .then(data => {
+                 if (data.html) {
+                     document.getElementById('product-grid').insertAdjacentHTML('beforeend', data.html);
+                     this.currentPage = data.next_page - 1;
+                     this.hasMore = data.has_more;
+                     this.loadedCount += data.count;
+                 }
+             })
+             .catch(err => console.error('Error streaming product chunk:', err))
+             .finally(() => {
+                 this.loadingMore = false;
+                 // Progressively fetch next page 10 at a time until all products are loaded
+                 if (this.hasMore) {
+                     setTimeout(() => { this.loadNextChunk(); }, 400);
+                 }
+             });
+         },
+
+         init() {
+             if (this.hasMore) {
+                 setTimeout(() => { this.loadNextChunk(); }, 600);
+             }
          }
      }">
 
@@ -65,7 +109,7 @@
         <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
         </svg>
-        <span>Catalog Item Link Copied to Clipboard! 📋</span>
+        <span>Catalog Item Link Copied to Clipboard! <i class="fa-solid fa-clipboard-check text-emerald-400 ml-1"></i></span>
     </div>
 
     <!-- Hero Stock Preview Banner -->
@@ -73,7 +117,7 @@
         <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div class="relative z-10 max-w-xl space-y-4">
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold bg-amber-400/20 text-amber-200 dark:text-amber-300 border border-amber-400/30">
-                ✨ LIVE BAUCHI CATALOG 2026
+                <i class="fa-solid fa-star text-amber-300 mr-1.5"></i> LIVE BAUCHI CATALOG 2026
             </span>
             <h1 class="text-3xl sm:text-5xl font-black font-display tracking-tight text-white leading-tight">
                 ATLAS <span class="text-amber-400">COLLECTION</span>
@@ -101,7 +145,7 @@
         <div class="flex items-center space-x-2.5 overflow-x-auto pb-2 scrollbar-none">
             <a href="{{ route('shop.index') }}" 
                class="px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all border flex items-center space-x-2 {{ !request('category_id') ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-md font-black' : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-amber-400' }}">
-                <span>🔥 All Collections</span>
+                <span><i class="fa-solid fa-fire text-amber-500 mr-1"></i> All Collections</span>
             </a>
             @foreach($categories as $cat)
                 <a href="{{ route('shop.index', array_merge(request()->except('category_id', 'page'), ['category_id' => $cat->id])) }}" 
@@ -191,96 +235,10 @@
     </div>
 
     <!-- Stock Catalog Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        @forelse($products as $product)
-            @php
-                $itemUrl = route('shop.show', $product->slug ?? $product->id);
-            @endphp
-
-            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl hover:border-amber-400/60 transition-all group flex flex-col justify-between">
-                
-                <!-- Product Picture Presentation -->
-                <div class="relative aspect-square bg-slate-100 dark:bg-slate-950 overflow-hidden">
-                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" 
-                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                    
-                    <!-- Size Badge -->
-                    <div class="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-black text-white border border-slate-700">
-                        Size: {{ $product->size }}
-                    </div>
-
-                    <!-- Copy Link Action -->
-                    <button @click="copyItemLink('{{ $itemUrl }}')" 
-                            type="button"
-                            title="Copy Direct Item Link"
-                            class="absolute top-3 right-3 p-2 rounded-xl bg-slate-900/80 backdrop-blur-md text-slate-200 hover:text-amber-400 hover:bg-slate-900 border border-slate-700 transition-all">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                        </svg>
-                    </button>
-
-                    <!-- Stock Status Overlay -->
-                    <div class="absolute bottom-3 left-3">
-                        @if($product->stock_quantity > 0)
-                            <span class="bg-emerald-900/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-emerald-300 border border-emerald-700">
-                                Available: {{ $product->stock_quantity }} {{ $product->unit }}(s)
-                            </span>
-                        @else
-                            <span class="bg-rose-900/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-rose-300 border border-rose-700">
-                                Out of Stock
-                            </span>
-                        @endif
-                    </div>
-                </div>
-
-                <!-- Product Details Body -->
-                <div class="p-5 space-y-3 flex-1 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between text-[10px] uppercase font-bold text-amber-600 dark:text-amber-400 tracking-wider">
-                            <span>{{ $product->category->name ?? 'Streetwear' }}</span>
-                            @if($product->color)
-                                <span class="text-slate-500 dark:text-slate-400 font-normal">🎨 {{ $product->color }}</span>
-                            @endif
-                        </div>
-
-                        <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1 line-clamp-1 group-hover:text-amber-500 transition-colors">
-                            <a href="{{ $itemUrl }}">{{ $product->name }}</a>
-                        </h3>
-
-                        <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-1">
-                            {{ $product->description ?? 'Premium heavyweight cotton unisex garment.' }}
-                        </p>
-                    </div>
-
-                    <!-- Price & Quick WhatsApp Actions -->
-                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
-                        <div class="flex items-baseline justify-between">
-                            <span class="text-[10px] uppercase text-slate-400 font-semibold">Catalog Price</span>
-                            <span class="text-lg font-black text-amber-600 dark:text-amber-400 font-display">
-                                ₦{{ number_format($product->selling_price ?? $product->cost_price, 2) }}
-                            </span>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2">
-                            <a href="{{ $itemUrl }}" 
-                               class="py-2.5 px-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-[11px] rounded-xl text-center transition-all">
-                                Details
-                            </a>
-
-                            <button @click="openQuickModal({{ json_encode($product) }})" 
-                                    type="button"
-                                    class="py-2.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[11px] rounded-xl shadow-md text-center transition-all flex items-center justify-center space-x-1">
-                                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
-                                </svg>
-                                <span>Quick Order</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        @empty
+    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        @if($products->count() > 0)
+            @include('shop.partials.product_cards', ['products' => $products])
+        @else
             <div class="col-span-full py-16 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
                 <svg class="w-12 h-12 mx-auto text-slate-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
@@ -288,15 +246,33 @@
                 <p class="text-base font-bold text-slate-900 dark:text-white">No apparel items match your search</p>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Try selecting a different size or resetting filters.</p>
             </div>
-        @endforelse
+        @endif
     </div>
 
-    <!-- Pagination -->
-    @if($products->hasPages())
-        <div class="pt-6">
-            {{ $products->links() }}
+    <!-- Progressive 10-Item Chunk AJAX Status & Control Bar -->
+    <div class="pt-4 flex flex-col items-center justify-center space-y-3">
+        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 flex items-center space-x-2">
+            <span>Showing <strong class="text-slate-900 dark:text-white" x-text="loadedCount"></strong> of <strong class="text-amber-600 dark:text-amber-400 font-bold" x-text="totalCount"></strong> items</span>
+            <template x-if="hasMore">
+                <span class="inline-flex items-center text-[10px] text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20 font-bold animate-pulse">
+                    <i class="fa-solid fa-bolt mr-1"></i> Loading 10 more items via AJAX...
+                </span>
+            </template>
         </div>
-    @endif
+
+        <template x-if="hasMore">
+            <button @click="loadNextChunk()" 
+                    type="button" 
+                    :disabled="loadingMore"
+                    class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs rounded-2xl shadow-md transition-all flex items-center space-x-2 disabled:opacity-50">
+                <svg x-show="loadingMore" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span><i class="fa-solid fa-rotate-right mr-1"></i> <span x-text="loadingMore ? 'Fetching Next 10 Items...' : 'Load 10 More Products'"></span></span>
+            </button>
+        </template>
+    </div>
 
     <!-- QUICK WHATSAPP ORDER MODAL -->
     <div x-show="quickModalOpen" 

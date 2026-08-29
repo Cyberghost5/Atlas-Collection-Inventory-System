@@ -124,11 +124,11 @@
                 <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Customer Category:</span>
                 <label class="inline-flex items-center space-x-2 text-xs font-bold text-slate-800 dark:text-slate-200 cursor-pointer">
                     <input type="radio" name="customer_type" value="new" x-model="customerType" @change="onCustomerTypeChange()" class="text-amber-500 focus:ring-amber-500">
-                    <span>✨ New Customer</span>
+                    <span><i class="fa-solid fa-user-plus mr-1"></i> New Customer</span>
                 </label>
                 <label class="inline-flex items-center space-x-2 text-xs font-bold text-slate-800 dark:text-slate-200 cursor-pointer">
                     <input type="radio" name="customer_type" value="existing" x-model="customerType" @change="onCustomerTypeChange()" class="text-amber-500 focus:ring-amber-500">
-                    <span>👤 Existing Customer</span>
+                    <span><i class="fa-solid fa-users mr-1"></i> Existing Customer</span>
                 </label>
             </div>
 
@@ -143,7 +143,7 @@
                     <option value="">-- Choose Existing Customer --</option>
                     @foreach($existingCustomers as $cust)
                         <option value="{{ $cust->id }}">
-                            {{ $cust->name }} (📞 {{ $cust->phone ?? 'No Phone' }} - {{ $cust->email }})
+                            {{ $cust->name }} ({{ $cust->phone ?? 'No Phone' }} - {{ $cust->email }})
                         </option>
                     @endforeach
                 </select>
@@ -206,7 +206,7 @@
                                    x-model="item.searchTerm" 
                                    @focus="open = true" 
                                    @input="open = true; item.product_id = ''" 
-                                   placeholder="🔍 Type product name, size, SKU..." 
+                                   placeholder="Type product name, size, SKU..." 
                                    required 
                                    class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-amber-500 transition-all">
 
@@ -290,10 +290,10 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Payment Method <span class="text-rose-500">*</span></label>
                     <select name="payment_method" x-model="paymentMethod" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
-                        <option value="cash">💵 Cash Payment</option>
-                        <option value="bank_transfer">💳 Bank Transfer</option>
-                        <option value="pos">📱 POS / Card Machine</option>
-                        <option value="other">🌐 Other Payment</option>
+                        <option value="cash">Cash Payment</option>
+                        <option value="bank_transfer">Bank Transfer</option>
+                        <option value="pos">POS / Card Machine</option>
+                        <option value="other">Other Payment</option>
                     </select>
                 </div>
 
@@ -307,17 +307,17 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Order Status <span class="text-rose-500">*</span></label>
                     <select name="status" x-model="orderStatus" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
-                        <option value="completed">✅ Completed / Delivered</option>
-                        <option value="processing">📦 Processing / Packaging</option>
-                        <option value="pending">⏳ Pending Review</option>
+                        <option value="completed">Completed / Delivered</option>
+                        <option value="processing">Processing / Packaging</option>
+                        <option value="pending">Pending Review</option>
                     </select>
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Payment Status <span class="text-rose-500">*</span></label>
                     <select name="payment_status" x-model="paymentStatus" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
-                        <option value="paid">💳 Payment Received (Paid)</option>
-                        <option value="unpaid">⏳ Pending Payment (Unpaid)</option>
+                        <option value="paid">Payment Received (Paid)</option>
+                        <option value="unpaid">Pending Payment (Unpaid)</option>
                     </select>
                 </div>
 
@@ -353,7 +353,7 @@
             
             <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                 <div class="flex items-center space-x-2">
-                    <span class="p-2 bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded-xl font-bold text-sm">📋</span>
+                    <span class="p-2 bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded-xl font-bold text-sm"><i class="fa-solid fa-clipboard-list"></i></span>
                     <div>
                         <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">Confirm Sales Order Entry</h3>
                         <p class="text-[10px] text-slate-400">Please review order breakdown before deducting inventory</p>
@@ -412,7 +412,7 @@
                     Edit Details
                 </button>
                 <button type="button" @click="submitForm()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl shadow-lg transition-all flex items-center space-x-1">
-                    <span>✅ Confirm & Save Order</span>
+                    <span><i class="fa-solid fa-check mr-1"></i> Confirm & Save Order</span>
                 </button>
             </div>
 

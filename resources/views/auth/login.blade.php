@@ -87,7 +87,7 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Phone Number <span class="text-rose-500">*</span></label>
                     <div class="relative">
-                        <input type="text" name="phone" id="phone-input" value="{{ old('phone') }}" required 
+                        <input type="number" name="phone" id="phone-input" value="{{ old('phone') }}" required 
                                placeholder="e.g. 08012345678"
                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-amber-500 transition-all">
                         <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,9 +100,9 @@
                 <div>
                     <div class="flex items-center justify-between mb-1">
                         <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Password <span class="text-rose-500">*</span></label>
-                        <a href="{{ route('password.request') }}" class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 hover:underline transition-colors">
+                        <!-- <a href="{{ route('password.request') }}" class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 hover:underline transition-colors">
                             Forgot Password?
-                        </a>
+                        </a> -->
                     </div>
                     <div class="relative">
                         <input type="password" name="password" id="password-input" required 
@@ -132,7 +132,7 @@
 
         <div class="text-center">
             <a href="{{ route('shop.index') }}" class="text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-amber-500 transition-colors">
-                &larr; Back to Public Stock Catalog
+                &larr; Back to Home
             </a>
         </div>
 

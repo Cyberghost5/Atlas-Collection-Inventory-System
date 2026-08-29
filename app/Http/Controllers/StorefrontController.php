@@ -31,6 +31,11 @@ class StorefrontController extends Controller
 
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
+        } elseif ($request->filled('category')) {
+            $cat = Category::where('slug', $request->category)->first();
+            if ($cat) {
+                $query->where('category_id', $cat->id);
+            }
         }
 
         if ($request->filled('size')) {
@@ -56,10 +61,101 @@ class StorefrontController extends Controller
                 break;
         }
 
-        $products = $query->paginate(12)->withQueryString();
+        $products = $query->paginate(10)->withQueryString();
         $categories = Category::withCount('products')->get();
 
+        if ($request->ajax()) {
+            return response()->json([
+                'html'         => view('shop.partials.product_cards', compact('products'))->render(),
+                'has_more'     => $products->hasMorePages(),
+                'next_page'    => $products->currentPage() + 1,
+                'current_page' => $products->currentPage(),
+                'total'        => $products->total(),
+                'count'        => $products->count(),
+            ]);
+        }
+
         return view('shop.index', compact('products', 'categories'));
+    }
+
+    public function categories(Request $request)
+    {
+        $categories = Category::withCount(['products' => function ($q) {
+            $q->where('is_active', true)->retail();
+        }])->get();
+
+        $iconMap = [
+            'clothes'     => 'fa-shirt',
+            'perfumes'    => 'fa-spray-can-sparkles',
+            'shoes'       => 'fa-shoe-prints',
+            'bags'        => 'fa-bag-shopping',
+            'watches'     => 'fa-clock',
+            'jewelry'     => 'fa-gem',
+            'accessories' => 'fa-glasses',
+        ];
+
+        return view('shop.categories', compact('categories', 'iconMap'));
+    }
+
+    public function categoryShow($slug, Request $request)
+    {
+        $category = Category::where('slug', $slug)
+            ->orWhere('id', $slug)
+            ->firstOrFail();
+
+        $query = Product::with('category')
+            ->where('is_active', true)
+            ->where('category_id', $category->id)
+            ->retail();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('sku', 'like', "%{$search}%")
+                  ->orWhere('color', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('size')) {
+            $query->where('size', $request->size);
+        }
+
+        if ($request->boolean('in_stock_only')) {
+            $query->where('stock_quantity', '>', 0);
+        }
+
+        switch ($request->get('sort')) {
+            case 'price_asc':
+                $query->orderBy('selling_price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('selling_price', 'desc');
+                break;
+            case 'stock_desc':
+                $query->orderBy('stock_quantity', 'desc');
+                break;
+            default:
+                $query->latest();
+                break;
+        }
+
+        $products = $query->paginate(10)->withQueryString();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html'         => view('shop.partials.product_cards', compact('products'))->render(),
+                'has_more'     => $products->hasMorePages(),
+                'next_page'    => $products->currentPage() + 1,
+                'current_page' => $products->currentPage(),
+                'total'        => $products->total(),
+                'count'        => $products->count(),
+            ]);
+        }
+
+        $categories = Category::withCount('products')->get();
+
+        return view('shop.category_show', compact('category', 'products', 'categories'));
     }
 
     public function show($slug)

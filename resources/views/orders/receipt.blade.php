@@ -57,7 +57,7 @@
                 @endphp
 
                 <a href="{{ $waUrl }}" target="_blank" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow transition-all flex items-center space-x-1">
-                    <span>📱 WhatsApp Receipt</span>
+                    <span><i class="fa-brands fa-whatsapp mr-1 text-xs"></i> WhatsApp Receipt</span>
                 </a>
 
                 <!-- Print Button -->
@@ -104,7 +104,7 @@
                 <p class="text-[10px] text-slate-600 leading-tight">
                     Wunti Market, Bababa Plaza, Shop E7 Block E (Beside New Flyover), Bauchi, Nigeria
                 </p>
-                <p class="text-[10px] font-bold text-slate-800">📞 0810 399 6947 • 08103996947</p>
+                <p class="text-[10px] font-bold text-slate-800"><i class="fa-solid fa-phone text-slate-500 mr-1"></i> 0810 399 6947 • 08103996947</p>
             </div>
 
             <!-- Receipt Meta -->
@@ -215,10 +215,10 @@
                 <div>
                     <span class="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider block mb-1">Billed To Customer</span>
                     <h4 class="text-sm font-bold text-slate-900">{{ $order->customer_name }}</h4>
-                    <p class="text-slate-600 mt-1">📞 {{ $order->customer_phone ?? 'N/A' }}</p>
-                    <p class="text-slate-600">✉️ {{ $order->customer_email ?? 'N/A' }}</p>
+                    <p class="text-slate-600 mt-1"><i class="fa-solid fa-phone text-slate-400 mr-1"></i> {{ $order->customer_phone ?? 'N/A' }}</p>
+                    <p class="text-slate-600"><i class="fa-solid fa-envelope text-slate-400 mr-1"></i> {{ $order->customer_email ?? 'N/A' }}</p>
                     @if($order->shipping_address)
-                        <p class="text-slate-500 mt-2">📍 {{ $order->shipping_address }}</p>
+                        <p class="text-slate-500 mt-2"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i> {{ $order->shipping_address }}</p>
                     @endif
                 </div>
 

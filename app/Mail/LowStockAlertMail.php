@@ -20,7 +20,7 @@ class LowStockAlertMail extends Mailable
 
     public function build()
     {
-        return $this->subject("🚨 LOW STOCK ALERT: {$this->product->name} (Only {$this->product->stock_quantity} Left)")
+        return $this->subject("LOW STOCK ALERT: {$this->product->name} (Only {$this->product->stock_quantity} Left)")
                     ->view('emails.low_stock_alert');
     }
 }

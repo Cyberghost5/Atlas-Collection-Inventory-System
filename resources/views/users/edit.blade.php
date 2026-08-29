@@ -43,28 +43,28 @@
                     <label class="flex items-center p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 cursor-pointer">
                         <input type="radio" name="role" value="super_admin" {{ old('role', $user->role) === 'super_admin' ? 'checked' : '' }} class="text-amber-500 focus:ring-amber-500">
                         <div class="ml-3">
-                            <span class="block text-xs font-bold text-purple-700 dark:text-purple-400">👑 Super Admin</span>
+                            <span class="block text-xs font-bold text-purple-700 dark:text-purple-400"><i class="fa-solid fa-crown mr-1"></i> Super Admin</span>
                         </div>
                     </label>
 
                     <label class="flex items-center p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 cursor-pointer">
                         <input type="radio" name="role" value="admin" {{ old('role', $user->role) === 'admin' ? 'checked' : '' }} class="text-amber-500 focus:ring-amber-500">
                         <div class="ml-3">
-                            <span class="block text-xs font-bold text-indigo-700 dark:text-indigo-400">🛡️ Admin</span>
+                            <span class="block text-xs font-bold text-indigo-700 dark:text-indigo-400"><i class="fa-solid fa-shield-halved mr-1"></i> Admin</span>
                         </div>
                     </label>
 
                     <label class="flex items-center p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 cursor-pointer">
                         <input type="radio" name="role" value="staff" {{ old('role', $user->role) === 'staff' ? 'checked' : '' }} class="text-amber-500 focus:ring-amber-500">
                         <div class="ml-3">
-                            <span class="block text-xs font-bold text-blue-700 dark:text-blue-400">📦 Staff</span>
+                            <span class="block text-xs font-bold text-blue-700 dark:text-blue-400"><i class="fa-solid fa-box-archive mr-1"></i> Staff</span>
                         </div>
                     </label>
 
                     <label class="flex items-center p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 cursor-pointer">
                         <input type="radio" name="role" value="customer" {{ old('role', $user->role) === 'customer' ? 'checked' : '' }} class="text-amber-500 focus:ring-amber-500">
                         <div class="ml-3">
-                            <span class="block text-xs font-bold text-emerald-700 dark:text-emerald-400">🛍️ Customer</span>
+                            <span class="block text-xs font-bold text-emerald-700 dark:text-emerald-400"><i class="fa-solid fa-bag-shopping mr-1"></i> Customer</span>
                         </div>
                     </label>
 

@@ -43,10 +43,10 @@
 
             <div class="flex items-center space-x-2">
                 <a href="{{ route('customers.edit', $customer->phone ?? $customer->id) }}" class="px-4 py-2 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white font-extrabold text-xs rounded-xl shadow transition-all flex items-center space-x-1.5">
-                    <span>✏️ Edit Profile</span>
+                    <span><i class="fa-solid fa-pen-to-square mr-1"></i> Edit Profile</span>
                 </a>
                 <a href="{{ $waUrl }}" target="_blank" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow transition-all flex items-center space-x-1.5">
-                    <span>📱 Chat with VIP Customer</span>
+                    <span><i class="fa-brands fa-whatsapp mr-1 text-sm"></i> Chat with VIP Customer</span>
                 </a>
             </div>
         </div>
@@ -65,12 +65,12 @@
 
             <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
                 <span class="block text-[10px] text-slate-400 uppercase font-extrabold tracking-wider">Completed Orders</span>
-                <span class="text-xl font-black text-slate-900 dark:text-white font-display mt-1 block">{{ $customer->orders_count }} order(s)</span>
+                <span class="text-xl font-black text-slate-900 dark:text-white font-display mt-1 block">{{ $customer->orders_count }} Order(s)</span>
             </div>
 
             <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
                 <span class="block text-[10px] text-slate-400 uppercase font-extrabold tracking-wider">Top Purchased Category</span>
-                <span class="text-sm font-black text-amber-600 dark:text-amber-400 font-display mt-1 block truncate" title="{{ $favoriteCategory }}">🛍️ {{ $favoriteCategory }}</span>
+                <span class="text-sm font-black text-amber-600 dark:text-amber-400 font-display mt-1 block truncate" title="{{ $favoriteCategory }}"><i class="fa-solid fa-bag-shopping mr-1"></i> {{ $favoriteCategory }}</span>
             </div>
         </div>
 
@@ -78,15 +78,15 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
             <div>
                 <span class="block text-[10px] text-slate-400 uppercase font-semibold">Phone Number</span>
-                <span class="font-mono font-bold text-slate-900 dark:text-white">📞 {{ $customer->phone ?? 'N/A' }}</span>
+                <span class="font-mono font-bold text-slate-900 dark:text-white"><i class="fa-solid fa-phone text-slate-400 mr-1"></i> <a href="tel:{{ $customer->phone }}">{{ $customer->phone ?? 'N/A' }}</a></span>
             </div>
             <div>
                 <span class="block text-[10px] text-slate-400 uppercase font-semibold">Email Address</span>
-                <span class="text-slate-700 dark:text-slate-300">✉️ {{ $customer->email ?? 'N/A' }}</span>
+                <span class="text-slate-700 dark:text-slate-300"><i class="fa-solid fa-envelope text-slate-400 mr-1"></i> <a href="mailto:{{ $customer->email }}">{{ $customer->email ?? 'N/A' }}</a></span>
             </div>
             <div>
                 <span class="block text-[10px] text-slate-400 uppercase font-semibold">Shipping Address</span>
-                <span class="text-slate-700 dark:text-slate-300">📍 {{ $customer->address ?? 'Store Pickup - Bauchi Main Store' }}</span>
+                <span class="text-slate-700 dark:text-slate-300"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i> {{ $customer->address ?? 'Store Pickup - Bauchi Main Store' }}</span>
             </div>
         </div>
     </div>

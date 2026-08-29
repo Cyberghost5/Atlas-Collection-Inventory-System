@@ -26,6 +26,8 @@ use App\Http\Controllers\SitemapController;
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/', [StorefrontController::class, 'index'])->name('shop.index');
 Route::get('/shop', [StorefrontController::class, 'index']);
+Route::get('/categories', [StorefrontController::class, 'categories'])->name('shop.categories');
+Route::get('/categories/{slug}', [StorefrontController::class, 'categoryShow'])->name('shop.category.show');
 Route::get('/shop/product/{slug}', [StorefrontController::class, 'show'])->name('shop.show');
 Route::post('/shop/checkout', [StorefrontController::class, 'checkout'])->name('shop.checkout');
 Route::get('/order-status/{order_number}', [StorefrontController::class, 'trackOrder'])->name('shop.order-status');

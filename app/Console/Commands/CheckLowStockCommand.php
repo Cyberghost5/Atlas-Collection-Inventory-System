@@ -36,11 +36,11 @@ class CheckLowStockCommand extends Command
             ->get();
 
         if ($lowStockItems->isEmpty()) {
-            $this->info('✅ All catalog items are sufficiently stocked.');
+            $this->info('All catalog items are sufficiently stocked.');
             return 0;
         }
 
-        $this->warn("⚠️ Found {$lowStockItems->count()} item(s) reaching critical reorder levels:");
+        $this->warn("Found {$lowStockItems->count()} item(s) reaching critical reorder levels:");
 
         foreach ($lowStockItems as $item) {
             $supplierName = $item->supplier ? $item->supplier->name : 'Unassigned';
@@ -52,7 +52,7 @@ class CheckLowStockCommand extends Command
             'skus' => $lowStockItems->pluck('sku')->toArray(),
         ]);
 
-        $this->info('✨ Low stock audit check completed successfully.');
+        $this->info('Low stock audit check completed successfully.');
         return 0;
     }
 }

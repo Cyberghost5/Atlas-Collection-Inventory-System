@@ -53,9 +53,9 @@
                 <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Classification</label>
                 <select name="usage_type" class="w-full py-2 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
                     <option value="">All Stock Types</option>
-                    <option value="retail" {{ request('usage_type') == 'retail' ? 'selected' : '' }}>🛍️ Retail Inventory</option>
-                    <option value="display_sample" {{ request('usage_type') == 'display_sample' ? 'selected' : '' }}>🧥 Display / Tester</option>
-                    <option value="both" {{ request('usage_type') == 'both' ? 'selected' : '' }}>🔄 Dual Use</option>
+                    <option value="retail" {{ request('usage_type') == 'retail' ? 'selected' : '' }}>Retail Inventory</option>
+                    <option value="display_sample" {{ request('usage_type') == 'display_sample' ? 'selected' : '' }}>Display / Tester</option>
+                    <option value="both" {{ request('usage_type') == 'both' ? 'selected' : '' }}>Dual Use</option>
                 </select>
             </div>
 
@@ -89,17 +89,17 @@
 
             <div class="flex items-center space-x-2">
                 <select form="bulk-barcodes-form" name="format" class="py-1.5 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500">
-                    <option value="a4">📄 A4 Sticker Sheet (3×8)</option>
-                    <option value="thermal">🧾 80mm POS Thermal Roll</option>
+                    <option value="a4">A4 Sticker Sheet (3×8)</option>
+                    <option value="thermal">80mm POS Thermal Roll</option>
                 </select>
                 <button type="submit" form="bulk-barcodes-form" class="px-4 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs rounded-xl shadow-sm transition-all flex items-center space-x-1">
-                    <span>🏷️ Bulk Print Price Tag Stickers</span>
+                    <span><i class="fa-solid fa-barcode mr-1"></i> Bulk Print Price Tag Stickers</span>
                 </button>
                 @if(auth()->user()->isAdmin())
                     <a href="{{ route('export.products', request()->query()) }}" 
                        title="Export filtered inventory list to CSV"
                        class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl shadow-sm transition-all flex items-center space-x-1">
-                        <span>📥 Export CSV</span>
+                        <span><i class="fa-solid fa-file-csv mr-1"></i> Export CSV</span>
                     </a>
                 @endif
             </div>
@@ -151,7 +151,7 @@
                                 </span>
                                 @if($product->color)
                                     <span class="text-xs text-slate-600 dark:text-slate-300 font-medium ml-2 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
-                                        🎨 {{ $product->color }}
+                                        <i class="fa-solid fa-palette text-amber-500 mr-1"></i> {{ $product->color }}
                                     </span>
                                 @endif
                             </td>
@@ -165,15 +165,15 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($product->usage_type === 'display_sample')
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
-                                        🧥 Display / Tester
+                                        <i class="fa-solid fa-shirt mr-1"></i> Display / Tester
                                     </span>
                                 @elseif($product->usage_type === 'retail')
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                                        🛍️ Retail Stock
+                                        <i class="fa-solid fa-bag-shopping mr-1"></i> Retail Stock
                                     </span>
                                 @else
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                                        🔄 Dual Usage
+                                        <i class="fa-solid fa-rotate mr-1"></i> Dual Usage
                                     </span>
                                 @endif
                             </td>
@@ -208,7 +208,7 @@
                                    target="_blank" 
                                    title="Print Price Tag Barcode & QR Label"
                                    class="px-2.5 py-1.5 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-amber-400 font-bold text-[11px] rounded-lg transition-all inline-flex items-center space-x-1 shadow-sm">
-                                    <span>🏷️ Tag</span>
+                                    <span><i class="fa-solid fa-tag text-amber-400 mr-1"></i> Tag</span>
                                 </a>
 
                                 @php
@@ -226,6 +226,10 @@
                                     </svg>
                                     <span>Share</span>
                                 </a>
+
+                                    <a href="{{ route('products.barcode', $product->id) }}" class="px-2.5 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-[11px] rounded-lg transition-all border border-amber-500/20 inline-flex items-center space-x-1">
+                                        <span><i class="fa-solid fa-tag text-amber-500 mr-1"></i> Tag</span>
+                                    </a>
 
                                 <a href="{{ route('products.show', $product) }}" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-[11px] rounded-lg transition-all shadow-sm">
                                     Manage

@@ -47,7 +47,7 @@
                 <span>&larr; Back to Inventory</span>
             </a>
             <span class="text-slate-600">|</span>
-            <span class="text-xs font-bold text-amber-400 font-mono">🏷️ Price Tag Sticker Generator ({{ count($labels) }} Label Units)</span>
+            <span class="text-xs font-bold text-amber-400 font-mono"><i class="fa-solid fa-barcode text-amber-400 mr-1"></i> Price Tag Sticker Generator ({{ count($labels) }} Label Units)</span>
         </div>
 
         <div class="flex items-center space-x-3">
@@ -57,11 +57,11 @@
             @else
                 <a href="{{ route('products.barcode', ['product' => $product, 'format' => 'a4', 'count' => $count]) }}" 
                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {{ $format === 'a4' ? 'bg-amber-500 text-slate-950 shadow' : 'bg-slate-800 text-slate-300 hover:bg-slate-700' }}">
-                    📄 A4 Sticker Sheet Grid (3×8)
+                    <i class="fa-solid fa-file-lines mr-1"></i> A4 Sticker Sheet Grid (3×8)
                 </a>
                 <a href="{{ route('products.barcode', ['product' => $product, 'format' => 'thermal', 'count' => $count]) }}" 
                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {{ $format === 'thermal' ? 'bg-amber-500 text-slate-950 shadow' : 'bg-slate-800 text-slate-300 hover:bg-slate-700' }}">
-                    🧾 80mm POS Thermal Roll
+                    <i class="fa-solid fa-receipt mr-1"></i> 80mm POS Thermal Roll
                 </a>
             @endif
 

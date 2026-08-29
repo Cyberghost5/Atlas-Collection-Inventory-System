@@ -28,10 +28,10 @@
                 @if($transaction->order)
                     <div class="flex items-center justify-end space-x-2 pt-1">
                         <a href="{{ route('orders.receipt', ['order_number' => $transaction->order->order_number, 'format' => 'pos']) }}" target="_blank" class="px-3 py-1 bg-amber-500 text-slate-950 font-black text-[11px] rounded-xl shadow hover:bg-amber-400 transition-all">
-                            🖨️ Thermal POS Receipt
+                            <i class="fa-solid fa-print mr-1"></i> Thermal POS Receipt
                         </a>
                         <a href="{{ route('orders.receipt', ['order_number' => $transaction->order->order_number, 'format' => 'a4']) }}" target="_blank" class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-[11px] rounded-xl hover:bg-slate-200 transition-all">
-                            📄 A4 Invoice
+                            <i class="fa-solid fa-file-invoice mr-1"></i> A4 Invoice
                         </a>
                     </div>
                 @endif
@@ -42,10 +42,10 @@
             <div>
                 <span class="block text-[10px] text-slate-400 uppercase font-semibold">Payment Method</span>
                 <span class="font-bold text-slate-900 dark:text-white inline-flex items-center px-2.5 py-1 rounded-lg mt-0.5 {{ $transaction->payment_method_badge }}">
-                    @if($transaction->payment_method === 'cash') 💵 Cash Payment
-                    @elseif($transaction->payment_method === 'bank_transfer') 💳 Bank Transfer
-                    @elseif($transaction->payment_method === 'pos') 📱 POS / Card Machine
-                    @else 🌐 Other Payment @endif
+                    @if($transaction->payment_method === 'cash') <i class="fa-solid fa-money-bill-wave mr-1"></i> Cash Payment
+                    @elseif($transaction->payment_method === 'bank_transfer') <i class="fa-solid fa-building-columns mr-1"></i> Bank Transfer
+                    @elseif($transaction->payment_method === 'pos') <i class="fa-solid fa-credit-card mr-1"></i> POS / Card Machine
+                    @else <i class="fa-solid fa-globe mr-1"></i> Other Payment @endif
                 </span>
             </div>
 
@@ -59,45 +59,38 @@
             <div>
                 <span class="block text-[10px] text-slate-400 uppercase font-semibold">Linked Order Reference</span>
                 @if($transaction->order)
-                    <a href="{{ route('orders.show', $transaction->order->order_number) }}" class="font-mono font-bold text-indigo-600 dark:text-indigo-400 hover:underline text-sm block mt-0.5">
-                        #{{ $transaction->order->order_number }} &rarr;
+                    <a href="{{ route('orders.show', $transaction->order->order_number) }}" class="font-mono font-extrabold text-amber-600 dark:text-amber-400 hover:underline mt-0.5 block">
+                        #{{ $transaction->order->order_number }}
                     </a>
                 @else
-                    <span class="text-slate-400 font-mono block mt-0.5">N/A</span>
+                    <span class="text-slate-400 mt-0.5 block">Direct Transaction</span>
                 @endif
             </div>
         </div>
     </div>
 
-    <!-- Staff & Customer Logistics Breakdown -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <!-- Customer & Operator Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         
-        <!-- Staff Logger Details -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-3">
-            <h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2">
-                Logged By Staff / User
-            </h4>
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-slate-950 dark:bg-slate-800 text-amber-400 font-black flex items-center justify-center text-sm shadow">
-                    {{ strtoupper(substr($transaction->staff->name ?? 'System', 0, 2)) }}
-                </div>
-                <div>
-                    <h5 class="text-sm font-bold text-slate-900 dark:text-white">{{ $transaction->staff->name ?? 'System / Online Storefront' }}</h5>
-                    <p class="text-xs text-amber-500 font-bold uppercase tracking-wider">{{ strtoupper($transaction->staff->role ?? 'Customer Checkout') }}</p>
-                    <p class="text-[11px] text-slate-400">{{ $transaction->staff->email ?? 'N/A' }}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Customer Details -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-3">
-            <h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 space-y-2">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">
                 Customer Details
             </h4>
             <div class="space-y-1 text-xs">
                 <p class="font-bold text-slate-900 dark:text-white text-sm">{{ $transaction->customer_name }}</p>
-                <p class="text-slate-500 dark:text-slate-400 font-mono">📞 {{ $transaction->customer_phone ?? 'No Phone' }}</p>
-                <p class="text-slate-400">✉️ {{ $transaction->customer_email ?? 'No Email' }}</p>
+                <p class="text-slate-500 dark:text-slate-400 font-mono"><i class="fa-solid fa-phone text-slate-400 mr-1"></i> {{ $transaction->customer_phone ?? 'No Phone' }}</p>
+                <p class="text-slate-400"><i class="fa-solid fa-envelope text-slate-400 mr-1"></i> {{ $transaction->customer_email ?? 'No Email' }}</p>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 space-y-2">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                Cashier / Recorded By
+            </h4>
+            <div class="space-y-1 text-xs">
+                <p class="font-bold text-slate-900 dark:text-white text-sm">{{ $transaction->user->name ?? 'System Cashier' }}</p>
+                <p class="text-slate-500 dark:text-slate-400 font-mono">{{ $transaction->user->email ?? '' }}</p>
+                <p class="text-slate-400 uppercase font-bold text-[10px]">Role: {{ $transaction->user->role ?? 'Staff' }}</p>
             </div>
         </div>
 
@@ -121,7 +114,7 @@
                 </a>
             @else
                 <a href="{{ asset($transaction->payment_proof) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition-all">
-                    📄 View PDF / Document Proof &rarr;
+                    <i class="fa-solid fa-file-pdf mr-1"></i> View PDF / Document Proof &rarr;
                 </a>
             @endif
         </div>

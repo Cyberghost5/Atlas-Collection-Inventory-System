@@ -102,7 +102,7 @@
                 <a href="{{ route('export.orders', request()->query()) }}" 
                    title="Export filtered orders ledger to CSV"
                    class="py-2 px-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl shadow transition-all flex items-center justify-center space-x-1 flex-shrink-0">
-                    <span>📥 Export CSV</span>
+                    <span><i class="fa-solid fa-file-csv mr-1"></i> Export CSV</span>
                 </a>
                 <a href="{{ route('orders.create') }}" class="py-2 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs rounded-xl shadow transition-all flex items-center justify-center space-x-1 flex-shrink-0">
                     <span>+ Record Sale</span>
@@ -139,8 +139,8 @@
 
                             <td class="px-6 py-4">
                                 <span class="font-bold text-slate-900 dark:text-white block">{{ $order->customer_name }}</span>
-                                <div class="text-[11px] text-slate-500 dark:text-slate-400 font-mono whitespace-nowrap">📞 {{ $order->customer_phone }}</div>
-                                <div class="text-[10px] text-slate-400 whitespace-nowrap">✉️ {{ $order->customer_email }}</div>
+                                <div class="text-[11px] text-slate-500 dark:text-slate-400 font-mono whitespace-nowrap"><i class="fa-solid fa-phone text-slate-400 mr-1"></i> {{ $order->customer_phone }}</div>
+                                <div class="text-[10px] text-slate-400 whitespace-nowrap"><i class="fa-solid fa-envelope text-slate-400 mr-1"></i> {{ $order->customer_email }}</div>
                             </td>
 
                             <td class="px-6 py-4 text-slate-600 dark:text-slate-300">

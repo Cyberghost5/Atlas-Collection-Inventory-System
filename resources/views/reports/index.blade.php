@@ -17,14 +17,14 @@
         <form method="GET" action="{{ route('reports.index') }}" class="flex items-center space-x-3 w-full sm:w-auto">
             <label class="text-xs font-bold text-slate-600 dark:text-slate-400 whitespace-nowrap">Timeframe:</label>
             <select name="timeframe" onchange="this.form.submit()" class="w-full sm:w-56 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
-                <option value="all_time" {{ $timeframe === 'all_time' ? 'selected' : '' }}>📅 All Time (Full History)</option>
-                <option value="today" {{ $timeframe === 'today' ? 'selected' : '' }}>☀️ Today</option>
-                <option value="yesterday" {{ $timeframe === 'yesterday' ? 'selected' : '' }}>↩️ Yesterday</option>
-                <option value="last_7_days" {{ $timeframe === 'last_7_days' ? 'selected' : '' }}>📆 Last 7 Days</option>
-                <option value="last_30_days" {{ $timeframe === 'last_30_days' ? 'selected' : '' }}>📊 Last 30 Days</option>
-                <option value="this_month" {{ $timeframe === 'this_month' ? 'selected' : '' }}>🗓️ This Month</option>
-                <option value="last_month" {{ $timeframe === 'last_month' ? 'selected' : '' }}>⏮️ Last Month</option>
-                <option value="this_year" {{ $timeframe === 'this_year' ? 'selected' : '' }}>📈 This Year</option>
+                <option value="all_time" {{ $timeframe === 'all_time' ? 'selected' : '' }}>All Time (Full History)</option>
+                <option value="today" {{ $timeframe === 'today' ? 'selected' : '' }}>Today</option>
+                <option value="yesterday" {{ $timeframe === 'yesterday' ? 'selected' : '' }}>Yesterday</option>
+                <option value="last_7_days" {{ $timeframe === 'last_7_days' ? 'selected' : '' }}>Last 7 Days</option>
+                <option value="last_30_days" {{ $timeframe === 'last_30_days' ? 'selected' : '' }}>Last 30 Days</option>
+                <option value="this_month" {{ $timeframe === 'this_month' ? 'selected' : '' }}>This Month</option>
+                <option value="last_month" {{ $timeframe === 'last_month' ? 'selected' : '' }}>Last Month</option>
+                <option value="this_year" {{ $timeframe === 'this_year' ? 'selected' : '' }}>This Year</option>
             </select>
         </form>
     </div>
@@ -46,7 +46,7 @@
                 <div class="text-xl font-black text-rose-600 dark:text-rose-400 font-mono">₦{{ number_format($totalCostOfGoods, 2) }}</div>
                 <p class="text-[10px] text-slate-400">Total item cost price</p>
             @else
-                <div class="text-xs font-bold text-slate-400 mt-2">🔒 Admin Confidential</div>
+                <div class="text-xs font-bold text-slate-400 mt-2"><i class="fa-solid fa-lock text-slate-400 mr-1"></i> Admin Confidential</div>
             @endif
         </div>
 
@@ -57,7 +57,7 @@
                 <div class="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">₦{{ number_format($netProfit, 2) }}</div>
                 <p class="text-[10px] text-emerald-500 font-bold">Revenue &minus; Item Costs</p>
             @else
-                <div class="text-xs font-bold text-slate-400 mt-2">🔒 Admin Confidential</div>
+                <div class="text-xs font-bold text-slate-400 mt-2"><i class="fa-solid fa-lock text-slate-400 mr-1"></i> Admin Confidential</div>
             @endif
         </div>
 
@@ -240,7 +240,7 @@
                             <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
                                 <td class="px-3 py-2.5 font-bold text-slate-900 dark:text-white">
                                     {{ $tc->customer_name }}
-                                    <span class="block text-[10px] text-slate-400 font-mono">📞 {{ $tc->customer_phone ?? 'N/A' }}</span>
+                                    <span class="block text-[10px] text-slate-400 font-mono"><i class="fa-solid fa-phone text-slate-400 mr-1"></i> {{ $tc->customer_phone ?? 'N/A' }}</span>
                                 </td>
                                 <td class="px-3 py-2.5 text-center font-bold">{{ $tc->total_orders }} order(s)</td>
                                 <td class="px-3 py-2.5 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">₦{{ number_format($tc->total_spent, 2) }}</td>
@@ -284,7 +284,7 @@
                             </td>
                             <td class="px-4 py-3">
                                 <span class="font-bold text-slate-900 dark:text-white block">{{ $ro->customer_name }}</span>
-                                <span class="text-[10px] text-slate-400 font-mono">📞 {{ $ro->customer_phone }}</span>
+                                <span class="text-[10px] text-slate-400 font-mono"><i class="fa-solid fa-phone text-slate-400 mr-1"></i> {{ $ro->customer_phone }}</span>
                             </td>
                             <td class="px-4 py-3 text-center font-bold">{{ $ro->orderItems->count() }}</td>
                             <td class="px-4 py-3 text-right font-mono font-bold text-slate-900 dark:text-white">₦{{ number_format($ro->total_amount, 2) }}</td>

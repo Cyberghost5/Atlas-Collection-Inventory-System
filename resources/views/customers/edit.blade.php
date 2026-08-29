@@ -89,7 +89,7 @@
                     Cancel
                 </a>
                 <button type="submit" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs rounded-xl shadow-md transition-all flex items-center space-x-1">
-                    <span>💾 Save Customer Profile</span>
+                    <span><i class="fa-solid fa-floppy-disk mr-1"></i> Save Customer Profile</span>
                 </button>
             </div>
         </form>

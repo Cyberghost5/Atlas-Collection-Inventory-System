@@ -61,10 +61,10 @@
                 <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Payment Method</label>
                 <select name="payment_method" class="w-full py-2 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
                     <option value="">All Payment Methods</option>
-                    <option value="cash" {{ request('payment_method') === 'cash' ? 'selected' : '' }}>💵 Cash</option>
-                    <option value="bank_transfer" {{ request('payment_method') === 'bank_transfer' ? 'selected' : '' }}>💳 Bank Transfer</option>
-                    <option value="pos" {{ request('payment_method') === 'pos' ? 'selected' : '' }}>📱 POS / Card</option>
-                    <option value="other" {{ request('payment_method') === 'other' ? 'selected' : '' }}>🌐 Other</option>
+                    <option value="cash" {{ request('payment_method') === 'cash' ? 'selected' : '' }}>Cash</option>
+                    <option value="bank_transfer" {{ request('payment_method') === 'bank_transfer' ? 'selected' : '' }}>Bank Transfer</option>
+                    <option value="pos" {{ request('payment_method') === 'pos' ? 'selected' : '' }}>POS / Card Machine</option>
+                    <option value="other" {{ request('payment_method') === 'other' ? 'selected' : '' }}>Other Method</option>
                 </select>
             </div>
 
@@ -84,7 +84,7 @@
                 <a href="{{ route('export.transactions', request()->query()) }}" 
                    title="Export payment transactions ledger to CSV"
                    class="py-2 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl shadow-sm transition-all flex items-center space-x-1 flex-shrink-0">
-                    <span>📥 Export CSV</span>
+                    <span><i class="fa-solid fa-file-csv mr-1"></i> Export CSV</span>
                 </a>
                 @if(request()->hasAny(['search', 'payment_method', 'payment_status']))
                     <a href="{{ route('transactions.index') }}" class="py-2 px-3 bg-slate-100 text-slate-600 font-semibold text-xs rounded-xl hover:bg-slate-200 transition-all">
@@ -137,7 +137,7 @@
                             <!-- Customer -->
                             <td class="px-6 py-4">
                                 <span class="font-bold text-slate-900 dark:text-white block">{{ $trx->customer_name }}</span>
-                                <span class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">📞 {{ $trx->customer_phone ?? 'N/A' }}</span>
+                                <span class="text-[11px] text-slate-500 dark:text-slate-400 font-mono"><i class="fa-solid fa-phone text-slate-400 mr-1"></i> {{ $trx->customer_phone ?? 'N/A' }}</span>
                             </td>
 
                             <!-- Reference Order Link -->
@@ -159,10 +159,10 @@
                             <!-- Payment Method -->
                             <td class="px-6 py-4 text-center">
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-bold {{ $trx->payment_method_badge }}">
-                                    @if($trx->payment_method === 'cash') 💵 Cash
-                                    @elseif($trx->payment_method === 'bank_transfer') 💳 Bank Transfer
-                                    @elseif($trx->payment_method === 'pos') 📱 POS / Card
-                                    @else 🌐 Other @endif
+                                    @if($trx->payment_method === 'cash') <i class="fa-solid fa-money-bill-wave mr-1"></i> Cash
+                                    @elseif($trx->payment_method === 'bank_transfer') <i class="fa-solid fa-building-columns mr-1"></i> Bank Transfer
+                                    @elseif($trx->payment_method === 'pos') <i class="fa-solid fa-credit-card mr-1"></i> POS / Card
+                                    @else <i class="fa-solid fa-globe mr-1"></i> Other @endif
                                 </span>
                             </td>
 

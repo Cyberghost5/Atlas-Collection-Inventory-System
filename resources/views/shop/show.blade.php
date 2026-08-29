@@ -91,15 +91,21 @@
         <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
         </svg>
-        <span>Direct Item Link Copied to Clipboard! 📋</span>
+        <span>Direct Item Link Copied to Clipboard! <i class="fa-solid fa-clipboard-check text-emerald-400 ml-1"></i></span>
     </div>
 
     <!-- Breadcrumbs & Share Action -->
     <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
-            <a href="{{ route('shop.index') }}" class="hover:text-amber-500 transition-colors">Stock Catalog</a>
+            <a href="{{ route('shop.index') }}" class="hover:text-amber-500 transition-colors">Home</a>
             <span>&rarr;</span>
-            <span class="text-slate-700 dark:text-slate-200 font-semibold">{{ $product->category->name ?? 'Apparel' }}</span>
+            <!-- <a href="{{ route('shop.categories') }}" class="hover:text-amber-500 transition-colors">Categories</a>
+            <span>&rarr;</span> -->
+            @if($product->category)
+                <a href="{{ route('shop.category.show', $product->category->slug) }}" class="hover:text-amber-500 font-semibold transition-colors">{{ $product->category->name }}</a>
+            @else
+                <span class="text-slate-700 dark:text-slate-200 font-semibold">Apparel</span>
+            @endif
             <span>&rarr;</span>
             <span class="text-amber-600 dark:text-amber-400 font-bold">{{ $product->name }}</span>
         </div>
@@ -130,7 +136,7 @@
 
                 @if($product->color)
                     <div class="absolute top-4 right-4 bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-xl text-xs font-bold text-slate-200 border border-slate-700">
-                        🎨 {{ $product->color }}
+                        <i class="fa-solid fa-palette text-amber-400 mr-1"></i> {{ $product->color }}
                     </div>
                 @endif
             </div>
@@ -174,7 +180,7 @@
             <!-- Header & Price -->
             <div>
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
-                    💬 DIRECT WHATSAPP ORDER
+                    <i class="fa-brands fa-whatsapp mr-1.5 text-sm"></i> DIRECT WHATSAPP ORDER
                 </span>
                 <h2 class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white mt-2">{{ $product->name }}</h2>
                 <div class="mt-3 flex items-baseline space-x-2">
@@ -188,7 +194,7 @@
             <!-- Stock Alert Box -->
             @if($product->stock_quantity < 1)
                 <div class="p-4 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 rounded-2xl text-rose-700 dark:text-rose-400 text-xs font-bold">
-                    ⚠️ Currently Out of Stock. You can still message us on WhatsApp to inquire about re-stock dates!
+                    <i class="fa-solid fa-triangle-exclamation text-rose-500 mr-1.5"></i> Currently Out of Stock. You can still message us on WhatsApp to inquire about re-stock dates!
                 </div>
             @else
                 <div class="p-3 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 rounded-xl text-emerald-800 dark:text-emerald-400 text-xs font-medium flex items-center space-x-2">
@@ -260,7 +266,7 @@
                 </a>
 
                 <p class="text-[11px] text-slate-500 text-center">
-                    🔒 Direct interaction with seller. Payment & pickup/delivery will be finalized directly on WhatsApp.
+                    <i class="fa-solid fa-lock text-slate-400 mr-1"></i> Direct interaction with seller. Payment & pickup/delivery will be finalized directly on WhatsApp.
                 </p>
 
             </div>

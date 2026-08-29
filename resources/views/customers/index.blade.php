@@ -26,13 +26,13 @@
     <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
         <form method="GET" action="{{ route('customers.index') }}" class="w-full sm:w-auto flex flex-wrap items-center gap-2">
             <input type="text" name="search" value="{{ request('search') }}" 
-                   placeholder="🔍 Search customer name, phone, email..." 
+                   placeholder="Search customer name, phone, email..." 
                    class="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
 
             <select name="sort" @change="$el.closest('form').submit()" class="py-2 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500">
-                <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>✨ Newest Registered</option>
-                <option value="ltv_desc" {{ request('sort') === 'ltv_desc' ? 'selected' : '' }}>👑 Top Spending (LTV)</option>
-                <option value="orders_desc" {{ request('sort') === 'orders_desc' ? 'selected' : '' }}>📦 Most Orders Placed</option>
+                <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>Newest Registered</option>
+                <option value="ltv_desc" {{ request('sort') === 'ltv_desc' ? 'selected' : '' }}>Top Spending (LTV)</option>
+                <option value="orders_desc" {{ request('sort') === 'orders_desc' ? 'selected' : '' }}>Most Orders Placed</option>
             </select>
 
             <button type="submit" class="px-4 py-2 bg-slate-900 dark:bg-slate-800 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition-all">
@@ -47,7 +47,7 @@
             <a href="{{ route('export.customers', request()->query()) }}" 
                title="Export customer directory and lifetime values to CSV"
                class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl shadow transition-all flex items-center space-x-1">
-                <span>📥 Export CSV</span>
+                <span><i class="fa-solid fa-file-csv mr-1"></i> Export CSV</span>
             </a>
             <a href="{{ route('orders.create') }}" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs rounded-xl shadow transition-all flex items-center space-x-1">
                 <span>+ Create Customer Sale</span>
@@ -91,11 +91,11 @@
                             </td>
 
                             <td class="px-6 py-4 font-mono font-semibold text-slate-800 dark:text-slate-200">
-                                📞 {{ $cust->phone ?? 'N/A' }}
+                                <a href="tel:{{ $cust->phone }}">{{ $cust->phone ?? 'N/A' }}</a>
                             </td>
 
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400">
-                                {{ $cust->email }}
+                                <a href="mailto:{{ $cust->email }}">{{ $cust->email }}</a>
                             </td>
 
                             <td class="px-6 py-4 text-center font-bold text-slate-900 dark:text-white">

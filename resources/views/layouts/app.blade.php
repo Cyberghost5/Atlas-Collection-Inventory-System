@@ -28,6 +28,9 @@
 
     <title>@yield('title', 'Inventory System') | Atlas Collection</title>
 
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Google Fonts: Inter & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -297,13 +300,108 @@
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100 translate-y-0"
              x-transition:leave-end="opacity-0 -translate-y-4"
-             class="md:hidden bg-slate-900 text-white px-4 pt-2 pb-6 space-y-2 border-b border-slate-800 z-30">
-            <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-white bg-slate-800">Dashboard</a>
-            <a href="{{ route('products.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:bg-slate-800">Inventory</a>
-            <a href="{{ route('products.low-stock') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-rose-400 hover:bg-slate-800">Low Stock</a>
-            <a href="{{ route('stock-movements.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:bg-slate-800">Stock Audit Log</a>
-            <a href="{{ route('categories.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:bg-slate-800">Categories</a>
-            <a href="{{ route('suppliers.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:bg-slate-800">Suppliers</a>
+             class="md:hidden bg-slate-900 text-white px-4 pt-3 pb-6 space-y-1.5 border-b border-slate-800 z-30 font-semibold text-sm">
+            
+            <!-- Dashboard -->
+            <a href="{{ route('dashboard') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('dashboard') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                <i class="fa-solid fa-chart-line text-amber-400"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <!-- Inventory -->
+            <a href="{{ route('products.index') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('products.index') || request()->routeIs('products.create') || request()->routeIs('products.edit') || request()->routeIs('products.show') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                <i class="fa-solid fa-boxes-stacked text-amber-400"></i>
+                <span>Inventory</span>
+            </a>
+
+            <!-- Low Stock -->
+            <a href="{{ route('products.low-stock') }}" class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('products.low-stock') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-rose-400 hover:bg-slate-800' }}">
+                <div class="flex items-center space-x-2.5">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
+                    <span>Low Stock Alerts</span>
+                </div>
+                @php $lowCnt = \App\Models\Product::where('stock_quantity', '<=', 5)->count(); @endphp
+                @if($lowCnt > 0)
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-500 text-white">
+                        {{ $lowCnt }}
+                    </span>
+                @endif
+            </a>
+
+            <!-- Orders & Sales -->
+            <a href="{{ route('orders.index') }}" class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('orders.index') || request()->routeIs('orders.show') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                <div class="flex items-center space-x-2.5">
+                    <i class="fa-solid fa-bag-shopping text-amber-400"></i>
+                    <span>Orders & Sales</span>
+                </div>
+                @php $pendingCnt = \App\Models\Order::where('status', 'pending')->count(); @endphp
+                @if($pendingCnt > 0)
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950">
+                        {{ $pendingCnt }}
+                    </span>
+                @endif
+            </a>
+
+            <!-- Record Counter Sale -->
+            <a href="{{ route('orders.create') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('orders.create') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                <i class="fa-solid fa-cart-plus text-amber-400"></i>
+                <span>Record Counter Sale</span>
+            </a>
+
+            <!-- Customer Directory -->
+            <a href="{{ route('customers.index') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('customers.*') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                <i class="fa-solid fa-users text-amber-400"></i>
+                <span>Customer Directory</span>
+            </a>
+
+            @if(auth()->check() && auth()->user()->isAdmin())
+                <!-- Transactions Ledger -->
+                <a href="{{ route('transactions.index') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('transactions.*') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                    <i class="fa-solid fa-receipt text-amber-400"></i>
+                    <span>Transactions Ledger</span>
+                </a>
+
+                <!-- Stock Audit Log -->
+                <a href="{{ route('stock-movements.index') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('stock-movements.*') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                    <i class="fa-solid fa-boxes-packing text-amber-400"></i>
+                    <span>Stock Audit Log</span>
+                </a>
+
+                <!-- Executive Reports & Analytics -->
+                <a href="{{ route('reports.index') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('reports.*') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                    <i class="fa-solid fa-chart-pie text-amber-400"></i>
+                    <span>Reports & Analytics</span>
+                </a>
+            @endif
+
+            <!-- Categories -->
+            <a href="{{ route('categories.index') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('categories.*') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                <i class="fa-solid fa-layer-group text-amber-400"></i>
+                <span>Categories</span>
+            </a>
+
+            <!-- Suppliers -->
+            <a href="{{ route('suppliers.index') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('suppliers.*') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                <i class="fa-solid fa-truck-field text-amber-400"></i>
+                <span>Suppliers</span>
+            </a>
+
+            @if(auth()->check() && auth()->user()->isSuperAdmin())
+                <!-- User Management -->
+                <a href="{{ route('users.index') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('users.*') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                    <i class="fa-solid fa-user-gear text-amber-400"></i>
+                    <span>User Management</span>
+                </a>
+            @endif
+
+            <!-- View Public Storefront -->
+            <div class="pt-2 border-t border-slate-800">
+                <a href="{{ route('shop.index') }}" target="_blank" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl bg-slate-800 text-amber-400 hover:bg-slate-700 font-bold">
+                    <i class="fa-solid fa-store text-amber-400"></i>
+                    <span>View Storefront &rarr;</span>
+                </a>
+            </div>
+
         </div>
 
         <!-- Main Body (Padding Left dynamically expands from md:pl-64 to md:pl-20) -->
@@ -369,7 +467,7 @@
                     </button>
 
                     <a href="{{ route('shop.index') }}" target="_blank" class="hidden sm:inline-flex items-center px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs rounded-xl transition-all border border-slate-200 dark:border-slate-700">
-                        🛍️ Storefront
+                        <i class="fa-solid fa-store text-amber-500 mr-1.5"></i> Storefront
                     </a>
                     <a href="{{ route('products.create') }}" class="inline-flex items-center px-3.5 py-2 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow transition-all border border-slate-700">
                         <svg class="w-4 h-4 mr-1 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

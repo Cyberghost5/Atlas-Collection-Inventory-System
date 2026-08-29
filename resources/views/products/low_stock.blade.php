@@ -24,8 +24,8 @@
     <!-- Supplier-Grouped Bulk WhatsApp Restock Dispatcher -->
     @if(isset($supplierGroups) && count($supplierGroups) > 0)
         <div class="space-y-3">
-            <h4 class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                🚚 Supplier Bulk Reorder Dispatcher
+            <h4 class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center">
+                <i class="fa-solid fa-truck-ramp-box text-amber-500 mr-1.5"></i> Supplier Bulk Reorder Dispatcher
             </h4>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -51,7 +51,7 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 <h5 class="text-sm font-extrabold text-slate-900 dark:text-white font-display">{{ $supplierName }}</h5>
-                                <p class="text-[10px] text-slate-400 font-mono">📞 {{ $supplierObj->phone ?? 'No Phone Contact' }} • ✉️ {{ $supplierObj->email ?? 'No Email' }}</p>
+                                <p class="text-[10px] text-slate-400 font-mono"><i class="fa-solid fa-phone mr-1"></i> {{ $supplierObj->phone ?? 'No Phone Contact' }} • <i class="fa-solid fa-envelope mr-1"></i> {{ $supplierObj->email ?? 'No Email' }}</p>
                             </div>
                             <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
                                 {{ count($items) }} Low Stock Item(s)
@@ -69,10 +69,7 @@
 
                         <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-end">
                             <a href="{{ $waBulkUrl }}" target="_blank" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl shadow transition-all flex items-center space-x-1">
-                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
-                                </svg>
-                                <span>📱 Send Bulk WhatsApp Purchase Order</span>
+                                <span><i class="fa-brands fa-whatsapp mr-1 text-sm"></i> Send Bulk WhatsApp Purchase Order</span>
                             </a>
                         </div>
                     </div>
@@ -133,10 +130,7 @@
                                        target="_blank"
                                        title="Send Reorder Request on WhatsApp" 
                                        class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-[11px] rounded-xl transition-all inline-flex items-center space-x-1 shadow-sm">
-                                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
-                                        </svg>
-                                        <span>📱 Reorder</span>
+                                        <span><i class="fa-brands fa-whatsapp mr-1 text-xs"></i> Reorder</span>
                                     </a>
                                 @endif
 

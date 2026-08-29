@@ -8,7 +8,7 @@
 <div class="space-y-6">
 
     <!-- Table of Stock Movements -->
-    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors w-full max-w-full">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden w-full max-w-full">
         <div class="overflow-x-auto w-full max-w-full">
             <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300 min-w-[800px]">
                 <thead class="bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 uppercase font-semibold text-[10px] border-b border-slate-200 dark:border-slate-800">
@@ -43,19 +43,19 @@
                             <td class="px-6 py-4">
                                 @if($movement->type === 'in')
                                     <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                                        📦 Restock (+)
+                                        <i class="fa-solid fa-boxes-packing mr-1"></i> Restock (+)
                                     </span>
                                 @elseif($movement->type === 'out_internal')
                                     <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
-                                        🧥 Showroom (-)
+                                        <i class="fa-solid fa-shirt mr-1"></i> Showroom (-)
                                     </span>
                                 @elseif($movement->type === 'out_sale')
                                     <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                                        🛍️ Retail Sale (-)
+                                        <i class="fa-solid fa-bag-shopping mr-1"></i> Retail Sale (-)
                                     </span>
                                 @else
                                     <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
-                                        ⚠️ Audit Adjustment
+                                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> Audit Adjustment
                                     </span>
                                 @endif
                             </td>

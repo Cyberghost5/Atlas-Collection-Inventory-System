@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>🚨 Low Stock - Atlas Collection</title>
+    <title>Low Stock Alert - Atlas Collection</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #1e293b; margin: 0; padding: 20px; }
         .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
@@ -25,7 +25,7 @@
         <div class="header">
             <div class="logo">ATLAS COLLECTION</div>
             <div class="motto">...your style, our identity</div>
-            <div class="badge">🚨 LOW STOCK ALERT (BELOW 10 UNITS)</div>
+            <div class="badge">LOW STOCK ALERT (BELOW 10 UNITS)</div>
         </div>
 
         <div class="content">
@@ -69,14 +69,14 @@
 
             <div style="text-align: center; margin-top: 28px;">
                 <a href="{{ route('products.show', $product) }}" class="btn">
-                    📦 Manage Stock & Restock Item &rarr;
+                    Manage Stock & Restock Item &rarr;
                 </a>
             </div>
         </div>
 
         <div class="footer">
-            📍 Wunti market, Bababa plaza, shop E7 Block E (Beside New Flyover), Bauchi, Nigeria<br>
-            📞 Phone: 0810 399 6947 | Email: atlascollection6@gmail.com
+            Wunti market, Bababa plaza, shop E7 Block E (Beside New Flyover), Bauchi, Nigeria<br>
+            Phone: 0810 399 6947 | Email: atlascollection6@gmail.com
         </div>
     </div>
 </body>
