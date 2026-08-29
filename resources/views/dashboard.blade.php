@@ -40,6 +40,14 @@
                     </select>
                 </form>
 
+                <form method="POST" action="{{ route('admin.clear-cache') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-800 dark:text-slate-200 hover:text-rose-600 font-bold text-xs rounded-xl transition-all border border-slate-200 dark:border-slate-700 flex items-center space-x-1.5" title="Clear Application & Cache Files">
+                        <i class="fa-solid fa-broom text-amber-500"></i>
+                        <span>Clear Cache</span>
+                    </button>
+                </form>
+
                 <a href="{{ route('orders.create') }}" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center space-x-1">
                     <span>+ Record Sale</span>
                 </a>

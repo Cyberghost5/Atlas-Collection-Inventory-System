@@ -157,4 +157,18 @@ class DashboardController extends Controller
             'recentMovements'
         ));
     }
+
+    public function clearCache()
+    {
+        try {
+            \Illuminate\Support\Facades\Artisan::call('cache:clear');
+            \Illuminate\Support\Facades\Artisan::call('view:clear');
+            \Illuminate\Support\Facades\Artisan::call('route:clear');
+            \Illuminate\Support\Facades\Artisan::call('config:clear');
+
+            return redirect()->back()->with('success', 'System cache cleared successfully! (Application, View, Route, and Config caches flushed).');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to clear system cache: ' . $e->getMessage());
+        }
+    }
 }

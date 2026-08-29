@@ -262,7 +262,7 @@
                 <div class="p-1 bg-white rounded-lg">
                     <img src="{{ asset('logo.png') }}" alt="Atlas Collection Logo" class="h-7 w-auto">
                 </div>
-                <span class="font-display font-extrabold text-base text-white">ATLAS UNISEX</span>
+                <span class="font-display font-extrabold text-base text-white">ATLAS COLLECTION</span>
             </div>
             
             <div class="flex items-center space-x-2">
@@ -465,6 +465,19 @@
                             </span>
                         </template>
                     </button>
+
+                    @if(auth()->check() && auth()->user()->isAdmin())
+                        <!-- Clear System Cache Button -->
+                        <form method="POST" action="{{ route('admin.clear-cache') }}" class="inline">
+                            @csrf
+                            <button type="submit" 
+                                    title="Flush System & Application Cache" 
+                                    class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:text-rose-600 transition-colors flex items-center space-x-1.5 text-xs font-bold">
+                                <i class="fa-solid fa-broom text-amber-500"></i>
+                                <span class="hidden lg:inline">Clear Cache</span>
+                            </button>
+                        </form>
+                    @endif
 
                     <a href="{{ route('shop.index') }}" target="_blank" class="hidden sm:inline-flex items-center px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs rounded-xl transition-all border border-slate-200 dark:border-slate-700">
                         <i class="fa-solid fa-store text-amber-500 mr-1.5"></i> Storefront

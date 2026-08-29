@@ -339,7 +339,7 @@
             
             <div class="space-y-3">
                 <div class="flex items-center space-x-2">
-                    <span class="font-display font-black text-lg text-slate-900 dark:text-white">ATLAS UNISEX COLLECTION</span>
+                    <span class="font-display font-black text-lg text-slate-900 dark:text-white">ATLAS COLLECTION</span>
                 </div>
                 <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
                     Nigeria's premier luxury streetwear collection. Preview available stock and place instant orders directly with us via WhatsApp.

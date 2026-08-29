@@ -108,6 +108,9 @@ Route::middleware(['auth', 'role:super_admin,admin,staff'])->group(function () {
         // Executive Reports & Visual Analytics (Admin Only)
         Route::get('/admin/reports', [ReportController::class, 'index'])->name('reports.index');
 
+        // Clear System Caches (Admin Only)
+        Route::post('/admin/clear-cache', [DashboardController::class, 'clearCache'])->name('admin.clear-cache');
+
         // Record Deletions
         Route::delete('/admin/orders/{order_number}', [OrderController::class, 'destroy'])->name('orders.destroy');
         Route::delete('/admin/customers/{phone_or_id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
