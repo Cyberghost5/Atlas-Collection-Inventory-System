@@ -43,17 +43,16 @@ class Seed100ProductsAndCustomersSeeder extends Seeder
         $suppliers = Supplier::all();
         if ($suppliers->isEmpty()) {
             $supplierData = [
-                ['name' => 'Lagos Apparel Wholesalers', 'contact_name' => 'Chief Okonkwo', 'phone' => '08031234567', 'city' => 'Lagos'],
-                ['name' => 'Dubai Luxury Imports Direct', 'contact_name' => 'Tariq Al-Mansoor', 'phone' => '08059876543', 'city' => 'Dubai / Kano'],
-                ['name' => 'Bauchi Local Textile Craft', 'contact_name' => 'Mallam Isa', 'phone' => '08103996947', 'city' => 'Bauchi'],
-                ['name' => 'Istanbul Leather Goods Ltd', 'contact_name' => 'Mehmet Yilmaz', 'phone' => '08145558899', 'city' => 'Istanbul / Abuja'],
+                ['name' => 'Lagos Apparel Wholesalers', 'contact_person' => 'Chief Okonkwo', 'phone' => '08031234567', 'city' => 'Lagos'],
+                ['name' => 'Dubai Luxury Imports Direct', 'contact_person' => 'Tariq Al-Mansoor', 'phone' => '08059876543', 'city' => 'Dubai / Kano'],
+                ['name' => 'Bauchi Local Textile Craft', 'contact_person' => 'Mallam Isa', 'phone' => '08103996947', 'city' => 'Bauchi'],
+                ['name' => 'Istanbul Leather Goods Ltd', 'contact_person' => 'Mehmet Yilmaz', 'phone' => '08145558899', 'city' => 'Istanbul / Abuja'],
             ];
             foreach ($supplierData as $sup) {
                 Supplier::create([
                     'name' => $sup['name'],
-                    'contact_name' => $sup['contact_name'],
+                    'contact_person' => $sup['contact_person'],
                     'phone' => $sup['phone'],
-                    'city' => $sup['city'],
                     'address' => 'Trade Complex, ' . $sup['city']
                 ]);
             }

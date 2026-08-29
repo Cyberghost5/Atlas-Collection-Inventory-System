@@ -111,9 +111,14 @@ class ReportController extends Controller
                 $trendData[$dLabel] = (float) ($salesByDate[$dStr] ?? 0);
             }
         } else {
-            // Group by Month
+            // Group by Month (Cross-database support for MySQL & SQLite)
+            $driver = DB::connection()->getDriverName();
+            $monthExpr = $driver === 'sqlite' 
+                ? "STRFTIME('%Y-%m', created_at)" 
+                : "DATE_FORMAT(created_at, '%Y-%m')";
+
             $salesByMonth = (clone $ordersQuery)
-                ->select(DB::raw("STRFTIME('%Y-%m', created_at) as month"), DB::raw('SUM(total_amount) as total_revenue'))
+                ->select(DB::raw("{$monthExpr} as month"), DB::raw('SUM(total_amount) as total_revenue'))
                 ->groupBy('month')
                 ->orderBy('month', 'asc')
                 ->pluck('total_revenue', 'month')

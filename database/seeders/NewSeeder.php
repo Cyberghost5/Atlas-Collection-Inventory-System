@@ -13,7 +13,7 @@ use App\Models\Transaction;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
-class AtlasCollectionSeeder extends Seeder
+class NewSeeder extends Seeder
 {
     public function run(): void
     {
