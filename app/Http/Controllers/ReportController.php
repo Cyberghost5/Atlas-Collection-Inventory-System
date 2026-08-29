@@ -213,7 +213,7 @@ class ReportController extends Controller
         }
 
         $topCustomers = $topCustomersQuery
-            ->groupBy('customer_name', 'customer_phone')
+            ->groupBy('customer_name', 'customer_phone', 'customer_email')
             ->orderBy('total_spent', 'desc')
             ->take(10)
             ->get();
