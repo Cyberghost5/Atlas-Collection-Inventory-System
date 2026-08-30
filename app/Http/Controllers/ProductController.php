@@ -50,7 +50,12 @@ class ProductController extends Controller
             $query->lowStock();
         }
 
-        $products = $query->orderBy('name', 'asc')->paginate(15)->withQueryString();
+        $perPage = (int) $request->input('per_page', 15);
+        if (!in_array($perPage, [15, 25, 50, 100, 250, 500])) {
+            $perPage = 15;
+        }
+
+        $products = $query->latest()->paginate($perPage)->withQueryString();
         $categories = Category::orderBy('name')->get();
         $suppliers = Supplier::orderBy('name')->get();
 

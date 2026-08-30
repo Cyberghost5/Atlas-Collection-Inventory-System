@@ -29,7 +29,12 @@ class CustomerController extends Controller
             $query->latest();
         }
 
-        $customers = $query->paginate(15);
+        $perPage = (int) $request->input('per_page', 15);
+        if (!in_array($perPage, [15, 25, 50, 100, 250, 500])) {
+            $perPage = 15;
+        }
+
+        $customers = $query->paginate($perPage)->withQueryString();
         $totalCustomersCount = User::where('role', 'customer')->count();
 
         return view('customers.index', compact('customers', 'totalCustomersCount', 'sort'));

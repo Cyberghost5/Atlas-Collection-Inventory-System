@@ -23,9 +23,15 @@ class StockMovementController extends Controller
             return redirect()->route('dashboard')->with('error', 'Only Admins have permission to access the Stock Audit Log.');
         }
 
+        $perPage = (int) $request->input('per_page', 20);
+        if (!in_array($perPage, [15, 20, 25, 50, 100, 250, 500])) {
+            $perPage = 20;
+        }
+
         $movements = StockMovement::with(['product.category', 'user'])
             ->latest()
-            ->paginate(20);
+            ->paginate($perPage)
+            ->withQueryString();
 
         return view('stock_movements.index', compact('movements'));
     }

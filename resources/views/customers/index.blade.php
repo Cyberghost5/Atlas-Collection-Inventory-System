@@ -35,6 +35,14 @@
                 <option value="orders_desc" {{ request('sort') === 'orders_desc' ? 'selected' : '' }}>Most Orders Placed</option>
             </select>
 
+            <select name="per_page" onchange="this.form.submit()" class="py-2 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500">
+                <option value="15" {{ request('per_page', 15) == 15 ? 'selected' : '' }}>15 / page</option>
+                <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25 / page</option>
+                <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50 / page</option>
+                <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100 / page</option>
+                <option value="250" {{ request('per_page') == 250 ? 'selected' : '' }}>250 / page</option>
+            </select>
+
             <button type="submit" class="px-4 py-2 bg-slate-900 dark:bg-slate-800 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition-all">
                 Filter
             </button>

@@ -40,7 +40,12 @@ class UserLogController extends Controller
             });
         }
 
-        $logs = $query->latest()->paginate(25);
+        $perPage = (int) $request->input('per_page', 25);
+        if (!in_array($perPage, [15, 25, 50, 100, 250, 500])) {
+            $perPage = 25;
+        }
+
+        $logs = $query->latest()->paginate($perPage)->withQueryString();
         $users = User::whereIn('role', ['super_admin', 'admin', 'staff'])->orderBy('name')->get();
 
         $actionTypes = [

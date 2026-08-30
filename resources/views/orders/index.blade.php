@@ -90,6 +90,17 @@
                 </select>
             </div>
 
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Rows Per Page</label>
+                <select name="per_page" onchange="this.form.submit()" class="w-full py-2 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
+                    <option value="15" {{ request('per_page', 15) == 15 ? 'selected' : '' }}>15 Orders</option>
+                    <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25 Orders</option>
+                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50 Orders</option>
+                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100 Orders</option>
+                    <option value="250" {{ request('per_page') == 250 ? 'selected' : '' }}>250 Orders</option>
+                </select>
+            </div>
+
             <div class="sm:col-span-2 lg:col-span-2 flex items-end space-x-2">
                 <button type="submit" class="w-full py-2 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs rounded-xl shadow-sm transition-all">
                     Filter Orders

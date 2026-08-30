@@ -7,6 +7,21 @@
 @section('content')
 <div class="space-y-6">
 
+    <!-- Per Page Filter Bar -->
+    <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
+        <span class="text-xs font-bold text-slate-700 dark:text-slate-300"><i class="fa-solid fa-clock-rotate-left mr-1.5 text-amber-500"></i> Stock Audit Log History</span>
+        <form method="GET" action="{{ route('stock-movements.index') }}" class="flex items-center space-x-2">
+            <span class="text-xs text-slate-500 font-medium">Rows per page:</span>
+            <select name="per_page" onchange="this.form.submit()" class="py-1.5 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500">
+                <option value="15" {{ request('per_page') == 15 ? 'selected' : '' }}>15 Logs</option>
+                <option value="20" {{ request('per_page', 20) == 20 ? 'selected' : '' }}>20 Logs</option>
+                <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50 Logs</option>
+                <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100 Logs</option>
+                <option value="250" {{ request('per_page') == 250 ? 'selected' : '' }}>250 Logs</option>
+            </select>
+        </form>
+    </div>
+
     <!-- Table of Stock Movements -->
     <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden w-full max-w-full">
         <div class="overflow-x-auto w-full max-w-full">

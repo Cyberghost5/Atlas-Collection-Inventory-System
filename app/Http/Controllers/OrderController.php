@@ -39,7 +39,12 @@ class OrderController extends Controller
             });
         }
 
-        $orders = $query->latest()->paginate(15)->withQueryString();
+        $perPage = (int) $request->input('per_page', 15);
+        if (!in_array($perPage, [15, 25, 50, 100, 250, 500])) {
+            $perPage = 15;
+        }
+
+        $orders = $query->latest()->paginate($perPage)->withQueryString();
 
         $pendingCount = Order::where('status', 'pending')->count();
         $processingCount = Order::where('status', 'processing')->count();
