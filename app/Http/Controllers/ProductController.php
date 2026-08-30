@@ -96,15 +96,18 @@ class ProductController extends Controller
             'name'            => 'required|string|max:255',
             'sku'             => 'nullable|string|max:100|unique:products,sku',
             'size'            => 'nullable|string|max:50',
+            'available_sizes' => 'nullable|string|max:255',
             'color'           => 'nullable|string|max:100',
+            'available_colors'=> 'nullable|string|max:255',
             'barcode'         => 'nullable|string|max:100',
             'description'     => 'nullable|string',
             'usage_type'      => 'required|in:retail,display_sample,both',
             'unit'            => 'required|string|max:50',
             'cost_price'      => 'required|numeric|min:0',
             'selling_price'   => 'nullable|numeric|min:0',
-            'stock_quantity'  => 'required|integer|min:0',
-            'min_stock_level' => 'required|integer|min:0',
+            'stock_quantity'        => 'required|integer|min:0',
+            'display_stock_quantity' => 'nullable|integer|min:0',
+            'min_stock_level'       => 'required|integer|min:0',
             'image'           => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
         ]);
 
@@ -139,6 +142,8 @@ class ProductController extends Controller
                     'notes'      => 'Initial collection inventory setup',
                 ]);
             }
+
+            \App\Models\UserLog::log('product_created', "Added new inventory item '{$product->name}' (SKU: {$product->sku}) with initial stock of {$product->stock_quantity}.");
         });
 
         return redirect()->route('products.index')
@@ -167,13 +172,16 @@ class ProductController extends Controller
             'name'            => 'required|string|max:255',
             'sku'             => 'required|string|max:100|unique:products,sku,' . $product->id,
             'size'            => 'nullable|string|max:50',
+            'available_sizes' => 'nullable|string|max:255',
             'color'           => 'nullable|string|max:100',
+            'available_colors'=> 'nullable|string|max:255',
             'barcode'         => 'nullable|string|max:100',
             'description'     => 'nullable|string',
             'usage_type'      => 'required|in:retail,display_sample,both',
             'unit'            => 'required|string|max:50',
             'cost_price'      => 'required|numeric|min:0',
             'selling_price'   => 'nullable|numeric|min:0',
+            'display_stock_quantity' => 'nullable|integer|min:0',
             'min_stock_level' => 'required|integer|min:0',
             'image'           => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
         ]);
@@ -190,6 +198,8 @@ class ProductController extends Controller
 
         $product->update($validated);
 
+        \App\Models\UserLog::log('product_updated', "Updated product '{$product->name}' (SKU: {$product->sku}).");
+
         // Check if updated product stock is below 10 and notify
         $this->notificationService->checkAndNotify($product);
 
@@ -203,13 +213,47 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'Only Admins can delete apparel inventory items.');
         }
 
+        $pName = $product->name;
+        $pSku = $product->sku;
+
         if ($product->image && file_exists(public_path($product->image))) {
             @unlink(public_path($product->image));
         }
 
         $product->delete();
 
+        \App\Models\UserLog::log('product_deleted', "Deleted product '{$pName}' (SKU: {$pSku}).");
+
         return redirect()->route('products.index')
             ->with('success', 'Apparel item removed from collection.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        if (!auth()->user()->isAdmin()) {
+            return redirect()->back()->with('error', 'Only Admins can perform bulk deletion of inventory items.');
+        }
+
+        $validated = $request->validate([
+            'ids'   => 'required|array|min:1',
+            'ids.*' => 'exists:products,id',
+        ]);
+
+        $products = Product::whereIn('id', $validated['ids'])->get();
+        $count = $products->count();
+
+        DB::transaction(function () use ($products) {
+            foreach ($products as $product) {
+                if ($product->image && file_exists(public_path($product->image))) {
+                    @unlink(public_path($product->image));
+                }
+                $product->delete();
+            }
+        });
+
+        \App\Models\UserLog::log('product_deleted', "Batch deleted {$count} selected inventory item(s).");
+
+        return redirect()->route('products.index')
+            ->with('success', "Successfully deleted {$count} selected inventory item(s).");
     }
 }

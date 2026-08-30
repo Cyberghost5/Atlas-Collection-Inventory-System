@@ -166,6 +166,8 @@ class DashboardController extends Controller
             \Illuminate\Support\Facades\Artisan::call('route:clear');
             \Illuminate\Support\Facades\Artisan::call('config:clear');
 
+            \App\Models\UserLog::log('cache_cleared', "Flushed application, view, route, and config system caches.");
+
             $previousUrl = url()->previous();
             $redirectUrl = \Illuminate\Support\Str::contains($previousUrl, 'cache_cleared=1')
                 ? $previousUrl

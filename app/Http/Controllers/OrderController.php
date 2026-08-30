@@ -191,6 +191,8 @@ class OrderController extends Controller
                     $notificationService->checkAndNotify($product);
                 }
             }
+
+            \App\Models\UserLog::log('order_created', "Recorded sale order #{$order->order_number} for customer {$customerName} (Total: ₦" . number_format($totalAmount, 2) . ").");
         });
 
         return redirect()->route('orders.show', $order->order_number)

@@ -78,10 +78,32 @@
 
                     <!-- Color / Finish / Scent -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Color / Finish / Scent Notes</label>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Default Color / Finish / Scent</label>
                         <input type="text" name="color" value="{{ old('color') }}" 
-                               placeholder="e.g. Black, Gold, Woody Oud, Brown Leather"
+                               placeholder="e.g. Black, Gold, Woody Oud"
                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
+                    </div>
+
+                    <!-- Available Sizes / Characteristics List -->
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                            Available Sizes / Characteristic Options (Comma Separated)
+                        </label>
+                        <input type="text" name="available_sizes" value="{{ old('available_sizes') }}" 
+                               placeholder="e.g. S, M, L, XL, XXL OR EU 40, EU 41, EU 42 OR 50ml, 100ml" 
+                               class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
+                        <p class="text-[10px] text-slate-400 mt-1">Enter multiple sizes separated by commas so storefront customers can select their preferred size.</p>
+                    </div>
+
+                    <!-- Available Colors / Options List -->
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                            Available Colors / Style Options (Comma Separated)
+                        </label>
+                        <input type="text" name="available_colors" value="{{ old('available_colors') }}" 
+                               placeholder="e.g. Black, White, Navy Blue, Red, Olive Green" 
+                               class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
+                        <p class="text-[10px] text-slate-400 mt-1">Enter multiple colors separated by commas so storefront customers can choose their preferred color.</p>
                     </div>
 
                     <!-- Supplier -->
@@ -189,9 +211,19 @@
 
                     <!-- Initial Stock Quantity -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Initial Stock Quantity <span class="text-rose-500">*</span></label>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Actual Physical Stock Quantity <span class="text-rose-500">*</span></label>
                         <input type="number" min="0" name="stock_quantity" value="{{ old('stock_quantity', '0') }}" required
                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
+                        <p class="text-[10px] text-slate-400 mt-1">Real physical inventory for admin auditing & sales.</p>
+                    </div>
+
+                    <!-- Storefront Display Stock Count -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Storefront Display Stock (Optional)</label>
+                        <input type="number" min="0" name="display_stock_quantity" value="{{ old('display_stock_quantity') }}"
+                               placeholder="e.g. 20 (defaults to actual stock if empty)"
+                               class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
+                        <p class="text-[10px] text-slate-400 mt-1">Custom count shown to public storefront visitors (e.g. 20).</p>
                     </div>
 
                     <!-- Minimum Stock Warning Level -->

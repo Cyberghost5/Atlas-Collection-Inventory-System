@@ -27,9 +27,9 @@
 
                 <!-- Stock Status Overlay -->
                 <div class="absolute bottom-3 left-3">
-                    @if($product->stock_quantity > 0)
+                    @if($product->public_stock_quantity > 0)
                         <span class="bg-emerald-900/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-emerald-300 border border-emerald-700">
-                            Available: {{ $product->stock_quantity }} {{ $product->unit }}(s)
+                            Available: {{ $product->public_stock_quantity }} {{ $product->unit }}(s)
                         </span>
                     @else
                         <span class="bg-rose-900/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-rose-300 border border-rose-700">

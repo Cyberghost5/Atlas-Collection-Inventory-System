@@ -61,7 +61,12 @@ class StorefrontController extends Controller
                 break;
         }
 
-        $products = $query->paginate(10)->withQueryString();
+        $perPage = (int) $request->input('per_page', 12);
+        if (!in_array($perPage, [12, 24, 48, 96])) {
+            $perPage = 12;
+        }
+
+        $products = $query->paginate($perPage)->withQueryString();
         $categories = Category::withCount('products')->get();
 
         if ($request->ajax()) {
@@ -140,7 +145,12 @@ class StorefrontController extends Controller
                 break;
         }
 
-        $products = $query->paginate(10)->withQueryString();
+        $perPage = (int) $request->input('per_page', 12);
+        if (!in_array($perPage, [12, 24, 48, 96])) {
+            $perPage = 12;
+        }
+
+        $products = $query->paginate($perPage)->withQueryString();
 
         if ($request->ajax()) {
             return response()->json([

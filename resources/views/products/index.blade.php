@@ -79,15 +79,54 @@
         @csrf
     </form>
 
-    <div x-data="{ selectAll: false, selectedCount: 0, updateCount() { this.selectedCount = document.querySelectorAll('input[name=\'product_ids[]\']:checked').length; } }" class="space-y-4">
-        <!-- Bulk Barcode Action Bar -->
+    <!-- Standalone Bulk Delete Form -->
+    <form id="bulk-delete-form" method="POST" action="{{ route('products.bulk-destroy') }}">
+        @csrf
+        @method('DELETE')
+    </form>
+
+    <div x-data="{ 
+            selectAll: false, 
+            selectedCount: 0, 
+            showDeleteModal: false,
+            updateCount() { 
+                this.selectedCount = document.querySelectorAll('input[name=\'product_ids[]\']:checked').length; 
+            },
+            submitBulkDelete() {
+                let checkedInputs = document.querySelectorAll('input[name=\'product_ids[]\']:checked');
+                let deleteForm = document.getElementById('bulk-delete-form');
+                deleteForm.querySelectorAll('input[name=\'ids[]\']').forEach(el => el.remove());
+                
+                checkedInputs.forEach(input => {
+                    let hidden = document.createElement('input');
+                    hidden.type = 'hidden';
+                    hidden.name = 'ids[]';
+                    hidden.value = input.value;
+                    deleteForm.appendChild(hidden);
+                });
+                deleteForm.submit();
+            }
+        }" class="space-y-4">
+
+        <!-- Bulk Barcode & Delete Action Bar -->
         <div class="flex items-center justify-between p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
             <div class="flex items-center space-x-3">
-                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Bulk Price Tag Generator:</span>
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Bulk Actions:</span>
                 <span class="text-xs font-mono font-extrabold text-amber-600 dark:text-amber-400" x-text="selectedCount + ' Item(s) Selected'"></span>
             </div>
 
             <div class="flex items-center space-x-2">
+                @if(auth()->user()->isAdmin())
+                    <button type="button" 
+                            x-show="selectedCount > 0"
+                            x-cloak
+                            @click="showDeleteModal = true" 
+                            class="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs rounded-xl shadow-sm transition-all flex items-center space-x-1">
+                        <i class="fa-solid fa-trash-can mr-1"></i>
+                        <span>Delete Selected (<span x-text="selectedCount"></span>)</span>
+                    </button>
+                @endif
+
                 <select form="bulk-barcodes-form" name="format" class="py-1.5 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500">
                     <option value="a4">A4 Sticker Sheet (3×8)</option>
                     <option value="thermal">80mm POS Thermal Roll</option>
@@ -102,6 +141,52 @@
                         <span><i class="fa-solid fa-file-csv mr-1"></i> Export CSV</span>
                     </a>
                 @endif
+            </div>
+        </div>
+
+        <!-- Bulk Delete Confirmation Modal -->
+        <div x-show="showDeleteModal" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4"
+             style="display: none;">
+            
+            <div @click.away="showDeleteModal = false" 
+                 class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5 text-xs text-slate-800 dark:text-slate-200">
+                
+                <div class="flex items-center space-x-3 text-rose-600 dark:text-rose-400">
+                    <div class="w-10 h-10 rounded-2xl bg-rose-500/10 flex items-center justify-center text-xl font-bold border border-rose-500/20">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">Confirm Bulk Deletion</h3>
+                        <p class="text-[10px] text-slate-400">Permanent inventory removal</p>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-rose-50 dark:bg-rose-950/40 rounded-2xl border border-rose-200 dark:border-rose-900/60 text-slate-700 dark:text-slate-300 space-y-2">
+                    <p class="font-bold text-rose-700 dark:text-rose-400">
+                        Are you sure you want to delete <span x-text="selectedCount" class="font-black underline"></span> selected product(s)?
+                    </p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400">
+                        This action will permanently remove these items and their image files from the Atlas Collection inventory. This action cannot be undone.
+                    </p>
+                </div>
+
+                <div class="flex items-center justify-end space-x-3 pt-2">
+                    <button type="button" @click="showDeleteModal = false" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-200 transition-all">
+                        Cancel
+                    </button>
+                    <button type="button" @click="submitBulkDelete()" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white font-extrabold rounded-xl shadow transition-all flex items-center space-x-1.5">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>Yes, Delete <span x-text="selectedCount"></span> Item(s)</span>
+                    </button>
+                </div>
+
             </div>
         </div>
 
@@ -190,15 +275,18 @@
                             <td class="px-6 py-4 text-center whitespace-nowrap">
                                 @if($product->is_low_stock)
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-extrabold bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
-                                        <svg class="w-3.5 h-3.5 mr-1 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                                        </svg>
+                                        <i class="fa-solid fa-triangle-exclamation mr-1 text-rose-500"></i>
                                         {{ $product->stock_quantity }} {{ $product->unit }} (Low)
                                     </span>
                                 @else
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                                         {{ $product->stock_quantity }} {{ $product->unit }}
                                     </span>
+                                @endif
+                                @if(!is_null($product->display_stock_quantity))
+                                    <div class="text-[10px] text-amber-600 dark:text-amber-400 font-extrabold mt-0.5" title="Custom count shown to storefront visitors">
+                                        Storefront: {{ $product->display_stock_quantity }}
+                                    </div>
                                 @endif
                             </td>
 
@@ -226,10 +314,6 @@
                                     </svg>
                                     <span>Share</span>
                                 </a>
-
-                                    <a href="{{ route('products.barcode', $product->id) }}" class="px-2.5 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-[11px] rounded-lg transition-all border border-amber-500/20 inline-flex items-center space-x-1">
-                                        <span><i class="fa-solid fa-tag text-amber-500 mr-1"></i> Tag</span>
-                                    </a>
 
                                 <a href="{{ route('products.show', $product) }}" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-[11px] rounded-lg transition-all shadow-sm">
                                     Manage

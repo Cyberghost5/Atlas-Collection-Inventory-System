@@ -80,6 +80,8 @@ class StockMovementController extends Controller
             'adjustment'   => 'Adjusted inventory count for',
         ];
 
+        \App\Models\UserLog::log('stock_adjusted', "{$labels[$type]} {$qty} {$product->unit}(s) of '{$product->name}' (SKU: {$product->sku}).");
+
         return redirect()->back()
             ->with('success', "{$labels[$type]} {$qty} {$product->unit}(s) of {$product->name} (Size: {$product->size}).");
     }

@@ -17,6 +17,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\UserLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,12 +109,16 @@ Route::middleware(['auth', 'role:super_admin,admin,staff'])->group(function () {
         // Executive Reports & Visual Analytics (Admin Only)
         Route::get('/admin/reports', [ReportController::class, 'index'])->name('reports.index');
 
+        // User Activity Logs & Staff Action Tracker (Admin Only)
+        Route::get('/admin/user-logs', [UserLogController::class, 'index'])->name('user-logs.index');
+
         // Clear System Caches (Admin Only)
         Route::post('/admin/clear-cache', [DashboardController::class, 'clearCache'])->name('admin.clear-cache');
 
         // Record Deletions
         Route::delete('/admin/orders/{order_number}', [OrderController::class, 'destroy'])->name('orders.destroy');
         Route::delete('/admin/customers/{phone_or_id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+        Route::delete('/admin/products/bulk-delete', [ProductController::class, 'bulkDestroy'])->name('products.bulk-destroy');
         Route::delete('/admin/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
         // Category & Supplier Management

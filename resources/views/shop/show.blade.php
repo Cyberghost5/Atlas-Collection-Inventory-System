@@ -3,7 +3,8 @@
 @section('title', $product->name . ' | Atlas Collection Bauchi')
 @section('meta_title', $product->name . ' (Size ' . $product->size . ') - Atlas Collection Bauchi')
 @section('meta_description', 'Buy ' . $product->name . ' in Bauchi at Atlas Collection. Size: ' . $product->size . ', Color: ' . ($product->color ?? 'Standard') . '. Price: NGN ' . number_format($product->selling_price ?? $product->cost_price, 2) . '. Wunti Market, Bababa Plaza, Shop E7 Block E.')
-@section('meta_image', $product->image_url)
+@section('meta_image', $product->favicon_url)
+@section('favicon', $product->favicon_url)
 @section('meta_keywords', $product->name . ', ' . ($product->category->name ?? 'Apparel') . ' Bauchi, ' . $product->size . ' ' . $product->name . ', Atlas Collection Bauchi')
 
 @push('schema')
@@ -42,8 +43,10 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8" 
      x-data="{ 
          quantity: 1, 
-         maxStock: {{ $product->stock_quantity }}, 
+         maxStock: {{ $product->public_stock_quantity }}, 
          unitPrice: {{ $product->selling_price ?? $product->cost_price }},
+         selectedSize: '{{ $product->sizes_array[0] ?? $product->size ?? 'Standard' }}',
+         selectedColor: '{{ $product->colors_array[0] ?? $product->color ?? '' }}',
          customerName: '',
          customerPhone: '',
          deliveryNote: '',
@@ -62,7 +65,8 @@
 
          get whatsappLink() {
              let itemUrl = window.location.href;
-             let text = `Hello Atlas Collection!\nI would like to order the following apparel item from your Bauchi stock catalog:\n\n*Product:* {{ addslashes($product->name) }}\n*Size:* {{ $product->size }}\n*Color:* {{ addslashes($product->color ?? 'Standard') }}\n*Unit Price:* NGN ${this.unitPrice.toLocaleString('en-NG')}\n*Quantity:* ${this.quantity}\n*Total Estimate:* NGN ${this.totalEstimate}\n*SKU:* {{ $product->sku }}\n*Product Link:* ${itemUrl}`;
+             let colorStr = this.selectedColor ? this.selectedColor : 'Standard';
+             let text = `Hello Atlas Collection!\nI would like to order the following apparel item from your Bauchi stock catalog:\n\n*Product:* {{ addslashes($product->name) }}\n*Selected Size:* ${this.selectedSize}\n*Selected Color:* ${colorStr}\n*Unit Price:* NGN ${this.unitPrice.toLocaleString('en-NG')}\n*Quantity:* ${this.quantity}\n*Total Estimate:* NGN ${this.totalEstimate}\n*SKU:* {{ $product->sku }}\n*Product Link:* ${itemUrl}`;
              
              if (this.customerName.trim() !== '') {
                  text += `\n\n*Customer Name:* ${this.customerName.trim()}`;
@@ -141,17 +145,61 @@
                 @endif
             </div>
 
+            <!-- Interactive Item Characteristics Selector (Sizes & Colors) -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-sm transition-colors">
+                
+                <!-- Size Characteristics Selection -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Choose Size:</span>
+                        <span class="text-xs font-mono font-black text-amber-600 dark:text-amber-400" x-text="selectedSize"></span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach($product->sizes_array as $sz)
+                            <button type="button" 
+                                    @click="selectedSize = '{{ $sz }}'"
+                                    :class="selectedSize === '{{ $sz }}' ? 'bg-amber-500 text-slate-950 font-black border-amber-500 shadow-sm' : 'bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-amber-400'"
+                                    class="px-4 py-2 rounded-xl text-xs font-bold border transition-all">
+                                {{ $sz }}
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Color Characteristics Selection -->
+                @if(count($product->colors_array) > 0)
+                    <div class="space-y-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Choose Color / Option:</span>
+                            <span class="text-xs font-mono font-black text-amber-600 dark:text-amber-400" x-text="selectedColor"></span>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach($product->colors_array as $clr)
+                                <button type="button" 
+                                        @click="selectedColor = '{{ $clr }}'"
+                                        :class="selectedColor === '{{ $clr }}' ? 'bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 font-black border-slate-900 dark:border-amber-500 shadow-md' : 'bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-amber-400'"
+                                        class="px-4 py-2 rounded-xl text-xs font-bold border transition-all flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-palette text-amber-400"></i>
+                                    <span>{{ $clr }}</span>
+                                </button>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+            </div>
+
             <!-- Available Variants of the Same Line -->
             @if($variants->count() > 0)
                 <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 space-y-3 shadow-sm transition-colors">
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Available Size Variants</h4>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Other Linked Line Items</h4>
                     <div class="flex flex-wrap gap-2">
                         <a href="{{ route('shop.show', $product->slug ?? $product->id) }}" class="px-3.5 py-2 rounded-xl text-xs font-black bg-amber-500 text-slate-950 shadow-sm">
-                            Size {{ $product->size }} (Selected)
+                            {{ $product->name }} (Selected)
                         </a>
                         @foreach($variants as $variant)
                             <a href="{{ route('shop.show', $variant->slug ?? $variant->id) }}" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-amber-400 transition-all">
-                                Size {{ $variant->size }} ({{ $variant->stock_quantity > 0 ? 'In Stock' : 'Out of Stock' }})
+                                {{ $variant->name }} ({{ $variant->stock_quantity > 0 ? 'In Stock' : 'Out of Stock' }})
                             </a>
                         @endforeach
                     </div>
@@ -167,7 +215,7 @@
                 <div class="grid grid-cols-2 gap-3 pt-2 text-[11px] border-t border-slate-100 dark:border-slate-800 text-slate-500 dark:text-slate-400">
                     <div><span class="text-slate-400">SKU Code:</span> <span class="font-mono text-slate-800 dark:text-slate-200 font-bold">{{ $product->sku }}</span></div>
                     <div><span class="text-slate-400">Category:</span> <span class="text-slate-800 dark:text-slate-200 font-bold">{{ $product->category->name ?? 'Unisex' }}</span></div>
-                    <div><span class="text-slate-400">Stock Availability:</span> <span class="text-emerald-600 dark:text-emerald-400 font-extrabold">{{ $product->stock_quantity }} {{ $product->unit }}(s) left</span></div>
+                    <div><span class="text-slate-400">Stock Availability:</span> <span class="text-emerald-600 dark:text-emerald-400 font-extrabold">{{ $product->public_stock_quantity }} {{ $product->unit }}(s) available</span></div>
                     <div><span class="text-slate-400">Location:</span> <span class="text-slate-800 dark:text-slate-200">Bauchi, Nigeria</span></div>
                 </div>
             </div>
@@ -192,7 +240,7 @@
             </div>
 
             <!-- Stock Alert Box -->
-            @if($product->stock_quantity < 1)
+            @if($product->public_stock_quantity < 1)
                 <div class="p-4 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 rounded-2xl text-rose-700 dark:text-rose-400 text-xs font-bold">
                     <i class="fa-solid fa-triangle-exclamation text-rose-500 mr-1.5"></i> Currently Out of Stock. You can still message us on WhatsApp to inquire about re-stock dates!
                 </div>
@@ -216,7 +264,7 @@
                             -
                         </button>
                         
-                        <input type="number" x-model.number="quantity" min="1" max="{{ $product->stock_quantity }}" 
+                        <input type="number" x-model.number="quantity" min="1" max="{{ $product->public_stock_quantity }}" 
                                class="w-20 text-center py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500">
                         
                         <button @click="if (quantity < maxStock) quantity++" 
@@ -225,7 +273,7 @@
                             +
                         </button>
 
-                        <span class="text-xs text-slate-500 dark:text-slate-400 pl-2">Max: <strong class="text-slate-800 dark:text-slate-200">{{ $product->stock_quantity }}</strong></span>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 pl-2">Max: <strong class="text-slate-800 dark:text-slate-200">{{ $product->public_stock_quantity }}</strong></span>
                     </div>
                 </div>
 

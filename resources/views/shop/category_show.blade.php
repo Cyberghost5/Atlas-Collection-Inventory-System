@@ -121,7 +121,7 @@
 
     <!-- Filters & Search Bar -->
     <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-        <form method="GET" action="{{ route('shop.category.show', $category->slug) }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <form method="GET" action="{{ route('shop.category.show', $category->slug) }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             
             <!-- Search Input -->
             <div class="relative">
@@ -153,12 +153,22 @@
                 </select>
             </div>
 
+            <!-- Items Per Page Dropdown -->
+            <div>
+                <select name="per_page" onchange="this.form.submit()" class="w-full px-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
+                    <option value="12" {{ request('per_page', 12) == 12 ? 'selected' : '' }}>12 Items / Page</option>
+                    <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24 Items / Page</option>
+                    <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48 Items / Page</option>
+                    <option value="96" {{ request('per_page') == 96 ? 'selected' : '' }}>96 Items / Page</option>
+                </select>
+            </div>
+
             <!-- Actions -->
             <div class="flex items-center space-x-2">
                 <button type="submit" class="w-full py-2.5 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white font-extrabold text-xs rounded-2xl transition-all shadow-sm">
                     Apply Filter
                 </button>
-                @if(request()->hasAny(['search', 'size', 'sort']))
+                @if(request()->hasAny(['search', 'size', 'sort', 'per_page']))
                     <a href="{{ route('shop.category.show', $category->slug) }}" class="px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-xs rounded-2xl hover:bg-slate-200 transition-all">
                         Reset
                     </a>

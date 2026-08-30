@@ -98,49 +98,146 @@
     </div>
 
     <!-- Quick Stock Movement Logging Form -->
-    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 transition-colors">
-        <h3 class="text-base font-bold font-display text-slate-900 dark:text-white mb-4 flex items-center">
-            <svg class="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-            </svg>
-            Log Stock Movement / Transaction
-        </h3>
+    <div x-data="{
+            type: 'in',
+            quantity: 1,
+            notes: '',
+            currentStock: {{ $product->stock_quantity }},
+            showMovementConfirmModal: false,
 
-        <form method="POST" action="{{ route('products.stock-movement.store', $product) }}" class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-            @csrf
+            get typeLabel() {
+                switch(this.type) {
+                    case 'in': return 'Restock (+)';
+                    case 'out_internal': return 'Showroom Allocation (-)';
+                    case 'out_sale': return 'Retail Sale (-)';
+                    case 'adjustment': return 'Inventory Recount / Adjustment (=)';
+                    default: return 'Movement';
+                }
+            },
 
-            <!-- Movement Type -->
-            <div>
-                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Transaction Type</label>
-                <select name="type" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all">
-                    <option value="in">Restock (+)</option>
-                    <option value="out_internal">Display (-)</option>
-                    <option value="out_sale">Order Sale (-)</option>
-                    <option value="adjustment">Inventory Recount / Adjustment (=)</option>
-                </select>
+            get newStock() {
+                let qty = parseInt(this.quantity) || 0;
+                if (this.type === 'in') return this.currentStock + qty;
+                if (['out_internal', 'out_sale'].includes(this.type)) return Math.max(0, this.currentStock - qty);
+                if (this.type === 'adjustment') return qty;
+                return this.currentStock;
+            },
+
+            submitForm() {
+                document.getElementById('stock-movement-form').submit();
+            }
+        }">
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 transition-colors">
+            <h3 class="text-base font-bold font-display text-slate-900 dark:text-white mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                Log Stock Movement / Transaction
+            </h3>
+
+            <form id="stock-movement-form" method="POST" action="{{ route('products.stock-movement.store', $product) }}" class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                @csrf
+
+                <!-- Movement Type -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Transaction Type</label>
+                    <select name="type" x-model="type" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all">
+                        <option value="in">Restock (+)</option>
+                        <option value="out_internal">Display (-)</option>
+                        <option value="out_sale">Order Sale (-)</option>
+                        <option value="adjustment">Inventory Recount / Adjustment (=)</option>
+                    </select>
+                </div>
+
+                <!-- Quantity -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Quantity ({{ $product->unit }})</label>
+                    <input type="number" name="quantity" x-model.number="quantity" min="1" value="1" required 
+                           class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all">
+                </div>
+
+                <!-- Notes -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Notes / Order Ref (Optional)</label>
+                    <input type="text" name="notes" x-model="notes" placeholder="e.g. Order #1042, Showroom fitting display..." 
+                           class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all">
+                </div>
+
+                <!-- Submit Button (Triggers Confirmation Modal) -->
+                <div class="flex items-end">
+                    <button type="button" @click="showMovementConfirmModal = true" class="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center space-x-1.5">
+                        <i class="fa-solid fa-boxes-packing"></i>
+                        <span>Log Movement Entry</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Stock Movement Confirmation Modal -->
+        <div x-show="showMovementConfirmModal" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm"
+             style="display: none;">
+            
+            <div @click.away="showMovementConfirmModal = false" 
+                 class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5 text-xs text-slate-800 dark:text-slate-200">
+                
+                <div class="flex items-center space-x-3 text-indigo-600 dark:text-indigo-400">
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-xl font-bold border border-indigo-500/20">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">Confirm Stock Movement Entry</h3>
+                        <p class="text-[10px] text-slate-400">Audit trail ledger confirmation</p>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-50 dark:bg-slate-950/70 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2 text-xs">
+                    <div class="flex justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                        <span class="text-slate-400">Item Name:</span>
+                        <span class="font-bold text-slate-900 dark:text-white">{{ $product->name }} ({{ $product->sku }})</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                        <span class="text-slate-400">Movement Type:</span>
+                        <span class="font-bold text-indigo-600 dark:text-indigo-400" x-text="typeLabel"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                        <span class="text-slate-400">Quantity Change:</span>
+                        <span class="font-mono font-extrabold text-slate-900 dark:text-white" x-text="quantity + ' {{ $product->unit }}(s)'"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                        <span class="text-slate-400">Current Stock:</span>
+                        <span class="font-mono text-slate-600 dark:text-slate-300" x-text="currentStock + ' {{ $product->unit }}(s)'"></span>
+                    </div>
+                    <div class="flex justify-between pt-1 font-bold">
+                        <span class="text-slate-400">New Stock Level:</span>
+                        <span class="font-mono text-emerald-600 dark:text-emerald-400 text-sm" x-text="newStock + ' {{ $product->unit }}(s)'"></span>
+                    </div>
+                    <template x-if="notes.trim() !== ''">
+                        <div class="pt-2 text-[11px] text-slate-500 border-t border-slate-200 dark:border-slate-800">
+                            <span class="font-semibold text-slate-400">Notes:</span> <span x-text="notes"></span>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="flex items-center justify-end space-x-3 pt-2">
+                    <button type="button" @click="showMovementConfirmModal = false" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-200 transition-all">
+                        Cancel
+                    </button>
+                    <button type="button" @click="submitForm()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold rounded-xl shadow-lg transition-all flex items-center space-x-1.5">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Confirm & Commit Stock Entry</span>
+                    </button>
+                </div>
+
             </div>
-
-            <!-- Quantity -->
-            <div>
-                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Quantity ({{ $product->unit }})</label>
-                <input type="number" name="quantity" min="1" value="1" required 
-                       class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all">
-            </div>
-
-            <!-- Notes -->
-            <div>
-                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Notes / Order Ref (Optional)</label>
-                <input type="text" name="notes" placeholder="e.g. Order #1042, Showroom fitting display..." 
-                       class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all">
-            </div>
-
-            <!-- Submit -->
-            <div class="flex items-end">
-                <button type="submit" class="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl shadow-md transition-all">
-                    Log Movement
-                </button>
-            </div>
-        </form>
+        </div>
     </div>
 
     <!-- Movement History -->

@@ -211,6 +211,17 @@
                 </select>
             </div>
 
+            <!-- Items Per Page Dropdown -->
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Show Per Page</label>
+                <select name="per_page" onchange="this.form.submit()" class="w-full py-2.5 px-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all">
+                    <option value="12" {{ request('per_page', 12) == 12 ? 'selected' : '' }}>12 Items</option>
+                    <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24 Items</option>
+                    <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48 Items</option>
+                    <option value="96" {{ request('per_page') == 96 ? 'selected' : '' }}>96 Items</option>
+                </select>
+            </div>
+
             <!-- In-Stock Filter Checkbox & Submit Button -->
             <div class="flex flex-col justify-end space-y-2">
                 <label class="flex items-center space-x-2 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer pb-1">

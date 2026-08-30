@@ -27,6 +27,8 @@ class LoginController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
+            \App\Models\UserLog::log('login', "User '{$user->name}' ({$user->role}) logged in successfully.", $user->id);
+
             return $this->redirectUserByRole($user)
                 ->with('success', "Welcome back, {$user->name}!");
         }
@@ -38,6 +40,11 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        $user = Auth::user();
+        if ($user) {
+            \App\Models\UserLog::log('logout', "User '{$user->name}' logged out.", $user->id);
+        }
+
         Auth::logout();
 
         $request->session()->invalidate();

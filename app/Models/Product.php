@@ -17,7 +17,9 @@ class Product extends Model
         'slug',
         'sku',
         'size',
+        'available_sizes',
         'color',
+        'available_colors',
         'image',
         'barcode',
         'description',
@@ -26,6 +28,7 @@ class Product extends Model
         'cost_price',
         'selling_price',
         'stock_quantity',
+        'display_stock_quantity',
         'min_stock_level',
         'is_active',
     ];
@@ -34,6 +37,7 @@ class Product extends Model
         'cost_price' => 'decimal:2',
         'selling_price' => 'decimal:2',
         'stock_quantity' => 'integer',
+        'display_stock_quantity' => 'integer',
         'min_stock_level' => 'integer',
         'is_active' => 'boolean',
     ];
@@ -121,5 +125,38 @@ class Product extends Model
         }
 
         return asset('placeholder.svg');
+    }
+
+    public function getFaviconUrlAttribute(): string
+    {
+        if (!empty($this->image) && file_exists(public_path($this->image))) {
+            return asset($this->image);
+        }
+
+        return asset('logo.png');
+    }
+
+    public function getSizesArrayAttribute(): array
+    {
+        if (!empty($this->available_sizes)) {
+            return array_values(array_filter(array_map('trim', explode(',', $this->available_sizes))));
+        }
+        return !empty($this->size) ? [$this->size] : ['Standard'];
+    }
+
+    public function getColorsArrayAttribute(): array
+    {
+        if (!empty($this->available_colors)) {
+            return array_values(array_filter(array_map('trim', explode(',', $this->available_colors))));
+        }
+        return !empty($this->color) ? [$this->color] : [];
+    }
+
+    public function getPublicStockQuantityAttribute(): int
+    {
+        if (!is_null($this->display_stock_quantity)) {
+            return (int) $this->display_stock_quantity;
+        }
+        return (int) $this->stock_quantity;
     }
 }

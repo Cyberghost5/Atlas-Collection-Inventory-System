@@ -24,8 +24,13 @@
     <link rel="canonical" href="{{ url()->current() }}">
 
     <!-- Favicon & Web App Theme Color -->
-    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
+    @php
+        $activeFavicon = View::hasSection('favicon') && trim(View::getSection('favicon')) !== ''
+            ? View::getSection('favicon')
+            : asset('logo.png');
+    @endphp
+    <link rel="icon" href="{{ $activeFavicon }}">
+    <link rel="apple-touch-icon" href="{{ $activeFavicon }}">
     <meta name="theme-color" content="#d97706">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">

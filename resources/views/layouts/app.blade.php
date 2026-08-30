@@ -188,6 +188,14 @@
                         </svg>
                         <span x-show="!sidebarCollapsed" x-transition class="ml-3 truncate">Reports & Analytics</span>
                     </a>
+
+                    <!-- User Activity Logs -->
+                    <a href="{{ route('user-logs.index') }}" 
+                       title="User Activity Logs"
+                       class="flex items-center px-3 py-3 text-sm font-semibold rounded-xl transition-all duration-150 {{ request()->routeIs('user-logs.*') ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20 font-bold' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                        <i class="fa-solid fa-clock-rotate-left w-5 h-5 flex-shrink-0 flex items-center justify-center text-base {{ request()->routeIs('user-logs.*') ? 'text-slate-950' : 'text-amber-400' }}"></i>
+                        <span x-show="!sidebarCollapsed" x-transition class="ml-3 truncate">User Activity Logs</span>
+                    </a>
                 @endif
 
                 <!-- Divider / Label -->
@@ -371,6 +379,12 @@
                 <a href="{{ route('reports.index') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('reports.*') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
                     <i class="fa-solid fa-chart-pie text-amber-400"></i>
                     <span>Reports & Analytics</span>
+                </a>
+
+                <!-- User Activity Logs -->
+                <a href="{{ route('user-logs.index') }}" class="flex items-center space-x-2.5 px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('user-logs.*') ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800' }}">
+                    <i class="fa-solid fa-clock-rotate-left text-amber-400"></i>
+                    <span>User Activity Logs</span>
                 </a>
             @endif
 
