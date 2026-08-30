@@ -52,6 +52,16 @@ class Product extends Model
         return 'slug';
     }
 
+    public function getNameAttribute($value): string
+    {
+        return ucfirst($value ?? '');
+    }
+
+    public function setNameAttribute($value): void
+    {
+        $this->attributes['name'] = ucfirst(trim($value ?? ''));
+    }
+
     protected static function booted()
     {
         static::creating(function ($product) {
