@@ -54,12 +54,84 @@ class Product extends Model
 
     public function getNameAttribute($value): string
     {
-        return ucfirst($value ?? '');
+        if (empty($value)) return '';
+        return ucwords(strtolower($value));
     }
 
     public function setNameAttribute($value): void
     {
-        $this->attributes['name'] = ucfirst(trim($value ?? ''));
+        $this->attributes['name'] = ucwords(strtolower(trim($value ?? '')));
+    }
+
+    public function getSizeAttribute($value): ?string
+    {
+        return $this->formatCapitalized($value);
+    }
+
+    public function setSizeAttribute($value): void
+    {
+        $this->attributes['size'] = $this->formatCapitalized($value);
+    }
+
+    public function getColorAttribute($value): ?string
+    {
+        return $this->formatCapitalized($value);
+    }
+
+    public function setColorAttribute($value): void
+    {
+        $this->attributes['color'] = $this->formatCapitalized($value);
+    }
+
+    public function getAvailableSizesAttribute($value): ?string
+    {
+        return $this->formatCapitalized($value);
+    }
+
+    public function setAvailableSizesAttribute($value): void
+    {
+        $this->attributes['available_sizes'] = $this->formatCapitalized($value);
+    }
+
+    public function getAvailableColorsAttribute($value): ?string
+    {
+        return $this->formatCapitalized($value);
+    }
+
+    public function setAvailableColorsAttribute($value): void
+    {
+        $this->attributes['available_colors'] = $this->formatCapitalized($value);
+    }
+
+    protected function formatCapitalized(?string $value): ?string
+    {
+        if (is_null($value) || trim($value) === '') {
+            return $value;
+        }
+
+        $trimmed = trim($value);
+
+        if (str_contains($trimmed, ',')) {
+            $items = array_map(function ($item) {
+                return $this->capitalizeWord(trim($item));
+            }, explode(',', $trimmed));
+            return implode(', ', array_filter($items));
+        }
+
+        return $this->capitalizeWord($trimmed);
+    }
+
+    protected function capitalizeWord(string $item): string
+    {
+        if ($item === '') return '';
+
+        // Preserve standard size codes in UPPERCASE (e.g. S, M, L, XL, XXL, 3XL, EU 42)
+        if (preg_match('/^(S|M|L|XL|2XL|3XL|4XL|XXL|XXXL|EU\s*\d+)$/i', $item)) {
+            return strtoupper($item);
+        }
+
+        // Convert ALL CAPS or lowercase words to Title Case (First letter capitalized)
+        return ucwords(strtolower($item));
     }
 
     protected static function booted()
