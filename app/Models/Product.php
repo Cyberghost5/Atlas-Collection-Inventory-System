@@ -55,12 +55,12 @@ class Product extends Model
     public function getNameAttribute($value): string
     {
         if (empty($value)) return '';
-        return ucwords(strtolower($value));
+        return ucwords(mb_strtolower($value), " \t\r\n\f\v-/(.'\"");
     }
 
     public function setNameAttribute($value): void
     {
-        $this->attributes['name'] = ucwords(strtolower(trim($value ?? '')));
+        $this->attributes['name'] = ucwords(mb_strtolower(trim($value ?? '')), " \t\r\n\f\v-/(.'\"");
     }
 
     public function getSizeAttribute($value): ?string
@@ -130,8 +130,8 @@ class Product extends Model
             return strtoupper($item);
         }
 
-        // Convert ALL CAPS or lowercase words to Title Case (First letter capitalized)
-        return ucwords(strtolower($item));
+        // Convert ALL CAPS or lowercase words to Title Case (Capitalize Every Word)
+        return ucwords(mb_strtolower($item), " \t\r\n\f\v-/(.'\"");
     }
 
     protected static function booted()
