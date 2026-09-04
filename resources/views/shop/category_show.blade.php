@@ -197,7 +197,7 @@
             <span>Showing <strong class="text-slate-900 dark:text-white" x-text="loadedCount"></strong> of <strong class="text-amber-600 dark:text-amber-400 font-bold" x-text="totalCount"></strong> items</span>
             <template x-if="hasMore">
                 <span class="inline-flex items-center text-[10px] text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20 font-bold animate-pulse">
-                    <i class="fa-solid fa-bolt mr-1"></i> Loading 10 more items via AJAX...
+                    <i class="fa-solid fa-bolt mr-1"></i> Loading more, hang on tight...
                 </span>
             </template>
         </div>
